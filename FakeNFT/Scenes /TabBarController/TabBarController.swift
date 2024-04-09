@@ -17,7 +17,6 @@ final class TabBarController: UITabBarController {
         let cartViewController = CartViewController()
         let cartViewModel = CartViewModel()
         cartViewController.viewModel = cartViewModel
-        cartViewController.viewModel?.nftList.append(mock1)
     }
 
     override func viewDidLoad() {

@@ -1,11 +1,5 @@
-//
-//  CartViewModel.swift
-//  FakeNFT
-//
-//  Created by Ruth Dayter on 03.04.2024.
-//
-
 protocol CartViewModelProtocol {
+    //TODO: убрать переменные в дальнейшем, они для моков
     var nftList: [CartNftInfo] {get set}
     
     func viewDidLoad()
@@ -23,6 +17,8 @@ final class CartViewModel: CartViewModelProtocol {
     @Observable private var isNetworkAlertDisplaying: Bool
     @Observable private var isPaymentScreenDisplaying: Bool
     
+    var selectedCurrency: String
+    
     private var mock1 = CartNftInfo(name: "MockPic1", imageURLString: "", rating: 5, price: 1.78, id: "1")
     private var mock2 = CartNftInfo(name: "MockPic2", imageURLString: "", rating: 3, price: 1.11, id: "2")
 
@@ -30,13 +26,13 @@ final class CartViewModel: CartViewModelProtocol {
         self.numberOfNft = 0
         self.priceTotal = 0
         self.nftList = []
+        self.selectedCurrency = ""
         self.isEmptyCartPlaceholderDisplaying = true
         self.isNetworkAlertDisplaying = false
         self.isPaymentScreenDisplaying = false
     }
     
     func viewWillAppear() {
-        nftList.append(mock1)
     }
 
     func viewDidLoad() {

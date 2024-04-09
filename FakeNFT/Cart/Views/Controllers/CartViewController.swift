@@ -1,10 +1,3 @@
-//
-//  CartViewController.swift
-//  FakeNFT
-//
-//  Created by Ruth Dayter on 03.04.2024.
-//
-
 import UIKit
 import ProgressHUD
 
@@ -54,8 +47,11 @@ final class CartViewController: UIViewController, DeleteNftDelegate {
         //viewModel?.pullToRefreshDidTrigger()
     }
 
+    @objc private func payButtonDidTap() {
+        viewModel?.payButtonDidTap()
+    }
+    
     private func bindViewModel() {
-        print("binding")
         let numberOfNftBinding = { [weak self] in
             guard let self else { return }
             self.nftCount = $0
@@ -71,24 +67,14 @@ final class CartViewController: UIViewController, DeleteNftDelegate {
             guard let self else { return }
             //TODO: исправить на реальные данные
             self.nftList = $0
-            //self.nftCartTableView.reloadData()
             self.nftCartTableView.refreshControl?.beginRefreshing()
             self.nftCartTableView.refreshControl?.sendActions(for: .valueChanged)
-            print(self.nftCartTableView.refreshControl?.isRefreshing == true, "aha")
             if self.nftCartTableView.refreshControl?.isRefreshing == true {
                 self.nftCartTableView.refreshControl?.endRefreshing()
             }
             ProgressHUD.dismiss()
         }
-        /*let networkAlertDisplayBinding = { [weak self] isNetworkAlertDisplaying in
-            guard let self else { return }
-            if isNetworkAlertDisplaying {
-                ProgressHUD.dismiss()
-                if self.nftCartTableView.refreshControl?.isRefreshing == true {
-                    self.nftCartTableView.refreshControl?.endRefreshing()
-                }
-            }
-        }*/
+
         let paymentScreenDisplayBinding = { [weak self] isPaymentScreenDisplaying in
             if isPaymentScreenDisplaying {
                 self?.presentPaymentViewController()
@@ -106,7 +92,6 @@ final class CartViewController: UIViewController, DeleteNftDelegate {
                 
                 
             },
-            //isNetworkAlertDisplaying: networkAlertDisplayBinding,
             isPaymentScreenDisplaying: paymentScreenDisplayBinding
         )
         viewModel?.bind(bindings)
@@ -140,6 +125,25 @@ final class CartViewController: UIViewController, DeleteNftDelegate {
         let ratingItemTitle = "По рейтингу"
         let nameItemTitle = "По названию"
         let cancelItemTitle = "Закрыть"
+        
+        let alertController = CartAlertController(
+            delegate: self,
+            title: title,
+            actions: [
+                CartAlertAction(title: priceItemTitle) { [weak self] _ in
+                    //TODO
+                },
+                CartAlertAction(title: ratingItemTitle) { [weak self] _ in
+                    //TODO
+                },
+                CartAlertAction(title: nameItemTitle) { [weak self] _ in
+                    //TODO
+                },
+                CartAlertAction(title: cancelItemTitle, style: .cancel)
+            ],
+            style: .actionSheet)
+
+        alertController.show()
 
     }
 
@@ -148,7 +152,7 @@ final class CartViewController: UIViewController, DeleteNftDelegate {
 // MARK: UITableViewDataSource
 extension CartViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        nftCount
+        nftList.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -205,7 +209,6 @@ private extension CartViewController {
             image: UIImage(named: "Sort") ?? UIImage(),
             style: .plain,
             target: self,
-            //TODO
             action: #selector(sortButtonDidTap)
         )
         sortButton.tintColor = UIColor(named: "Black")
@@ -259,12 +262,14 @@ private extension CartViewController {
     }
 
     func displayPriceTotal() {
+        for nft in nftList {
+            nftPriceTotal += nft.price
+        }
         nftPriceTotalLabel.text = PriceFormatter.formattedPrice(nftPriceTotal)
     }
 
     func displayNftCount() {
-        nftCountLabel.text = "\(nftCount) NFT"
-        print("\(nftCount) NFT")
+        nftCountLabel.text = "\(nftList.count) NFT"
     }
 
     func createPaymentView() -> UIView {
@@ -287,7 +292,7 @@ private extension CartViewController {
             title: "К оплате"
         )
         //TODO
-        //button.addTarget(self, action: #selector(payButtonDidTap), for: .touchUpInside)
+        button.addTarget(self, action: #selector(payButtonDidTap), for: .touchUpInside)
         view.addSubview(button)
 
         NSLayoutConstraint.activate([
@@ -298,7 +303,8 @@ private extension CartViewController {
             button.widthAnchor.constraint(equalToConstant: 240),
             button.topAnchor.constraint(equalTo: view.topAnchor, constant: layoutMargin),
             button.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -layoutMargin),
-            button.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -layoutMargin)
+            button.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -layoutMargin),
+            button.widthAnchor.constraint(equalToConstant: 240)
         ])
         return view
     }
@@ -329,6 +335,6 @@ private extension CartViewController {
     }
     
     @objc private func sortButtonDidTap() {
-        //TODO
+        presentSortViewController()
     }
 }

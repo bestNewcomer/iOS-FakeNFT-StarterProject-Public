@@ -1,14 +1,8 @@
-//
-//  CurrencyCellViewModel.swift
-//  FakeNFT
-//
-//  Created by Ruth Dayter on 07.04.2024.
-//
-
 import Foundation
 
 protocol CurrencyCellViewModelProtocol {
     func bind(_ bindings: CurrencyCellViewModelBindings)
+    func cellReused(for currency: CartCurrency)
 }
 
 final class CurrencyCellViewModel: CurrencyCellViewModelProtocol {
@@ -23,5 +17,12 @@ final class CurrencyCellViewModel: CurrencyCellViewModelProtocol {
         self.$imageURL.bind(action: bindings.imageURL)
         self.$currencyName.bind(action: bindings.currencyName)
         self.$currencyCode.bind(action: bindings.currencyCode)
+    }
+    
+    func cellReused(for currency: CartCurrency) {
+        imageURL = currency.imageURL
+        currencyName = currency.name
+        currencyCode = currency.title
+        currencyId = currency.id
     }
 }

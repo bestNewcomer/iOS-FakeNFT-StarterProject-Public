@@ -23,7 +23,6 @@ final class RatingView: UIView {
     private lazy var starsStackView = createStarsStackView()
 
     override init(frame: CGRect) {
-        print("in init")
         super.init(frame: frame)
     }
 

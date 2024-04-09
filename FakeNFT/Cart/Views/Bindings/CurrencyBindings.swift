@@ -1,18 +1,10 @@
-//
-//  CurrencyBindings.swift
-//  FakeNFT
-//
-//  Created by Ruth Dayter on 07.04.2024.
-//
-
 import Foundation
 
 struct SelectCurrencyViewModelBindings {
+    let currencyList: ([CartCurrency]) -> Void
     let isViewDismissing: ClosureBool
     let isAgreementDisplaying: ClosureBool
-    //let isNetworkAlertDisplaying: ClosureBool
-    let isPaymentResultDisplaying: (Bool?) -> Void
-    let isCurrencyDidSelect: ClosureBool
+    let isCurrencySelected: ClosureBool
 }
 
 struct CurrencyCellViewModelBindings {

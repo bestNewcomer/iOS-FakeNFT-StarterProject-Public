@@ -1,10 +1,3 @@
-//
-//  CartCellViewModel.swift
-//  FakeNFT
-//
-//  Created by Ruth Dayter on 07.04.2024.
-//
-
 import Foundation
 
 protocol CartCellViewModelProtocol {
@@ -32,7 +25,6 @@ final class CartCellViewModel: CartCellViewModelProtocol {
     }
 
     func cellReused(for nft: CartNftInfo) {
-        print("called")
         rating = nft.rating
         price = nft.price
         name = nft.name

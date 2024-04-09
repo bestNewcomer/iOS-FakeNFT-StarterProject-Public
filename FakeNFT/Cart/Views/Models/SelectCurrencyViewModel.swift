@@ -1,49 +1,58 @@
-//
-//  SelectCurrencyViewModel.swift
-//  FakeNFT
-//
-//  Created by Ruth Dayter on 07.04.2024.
-//
-
 import Foundation
 
-protocol SelectCurrencyViewModelProtocol {
+protocol SelectCurrencyViewModelProtocol: AlertServiceDelegate {
+    var selectedCurrency: String? {get set}
+    
     func viewDidLoad()
     func bind(_ bindings: SelectCurrencyViewModelBindings)
     func backButtonDidTap()
     func userAgreementDidTap()
     func didSelectCurrency(_ currency: String)
+    func pullToRefreshDidTrigger()
+    func payButtonDidTap()
 }
 
 final class SelectCurrencyViewModel: SelectCurrencyViewModelProtocol {
+    @Observable private var currencyList: [CartCurrency]
     @Observable private var isViewDismissing: Bool
     @Observable private var isAgreementDisplaying: Bool
     @Observable private var isNetworkAlertDisplaying: Bool
     @Observable private var isPaymentResultDisplaying: Bool?
-    @Observable private var isCurrencyDidSelect: Bool
+    @Observable private var isCurrencySelected: Bool
 
-    private var selectedCurrency: String?
+    var selectedCurrency: String?
 
     init() {
+        self.currencyList = []
+        self.selectedCurrency = ""
         self.isViewDismissing = false
         self.isAgreementDisplaying = false
         self.isNetworkAlertDisplaying = false
-        self.isCurrencyDidSelect = false
+        self.isCurrencySelected = false
     }
 
     func backButtonDidTap() {
         isViewDismissing = true
     }
+    
+    func payButtonDidTap() {
+        guard let selectedCurrency else { return }
+    }
+    
+    func pullToRefreshDidTrigger() {
+        
+    }
+
 
     func viewDidLoad() {
+        
     }
 
     func bind(_ bindings: SelectCurrencyViewModelBindings) {
+        self.$currencyList.bind(action: bindings.currencyList)
         self.$isViewDismissing.bind(action: bindings.isViewDismissing)
         self.$isAgreementDisplaying.bind(action: bindings.isAgreementDisplaying)
-        //self.$isNetworkAlertDisplaying.bind(action: bindings.isNetworkAlertDisplaying)
-        self.$isPaymentResultDisplaying.bind(action: bindings.isPaymentResultDisplaying)
-        self.$isCurrencyDidSelect.bind(action: bindings.isCurrencyDidSelect)
+        self.$isCurrencySelected.bind(action: bindings.isCurrencySelected)
     }
 
     func userAgreementDidTap() {
@@ -52,7 +61,7 @@ final class SelectCurrencyViewModel: SelectCurrencyViewModelProtocol {
 
     func didSelectCurrency(_ currency: String) {
         selectedCurrency = currency
-        isCurrencyDidSelect = true
+        isCurrencySelected = true
     }
 
     private func paymentResultDidReceive(_ result: Result<Bool, Error>) {

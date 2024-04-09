@@ -36,12 +36,15 @@ final class CartViewCell: UITableViewCell, ReuseIdentifying {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    @objc private func deleteButtonDidTap() {
+        viewModel?.deleteButtonDidTap(image: nftImageView.image)
+    }
 
     private func bindViewModel() {
         let bindings = CartCellViewModelBindings(
             rating: { [weak self] in
                 self?.nftRatingView.rating = $0
-                print($0, "hyhy")
             },
             price: { [weak self] in
                 self?.nftPriceLabel.text = PriceFormatter.formattedPrice($0)
@@ -165,8 +168,7 @@ private extension CartViewCell {
         button.setImage(UIImage(named: "Delete"), for: .normal)
         button.tintColor = UIColor(named: "Black")
         button.translatesAutoresizingMaskIntoConstraints = false
-        //TODO
-        //button.addTarget(self, action: #selector(deleteButtonDidTap), for: .touchUpInside)
+        button.addTarget(self, action: #selector(deleteButtonDidTap), for: .touchUpInside)
         return button
     }
 }

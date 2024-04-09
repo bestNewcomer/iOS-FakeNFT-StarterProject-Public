@@ -1,10 +1,3 @@
-//
-//  SelectCurrencyViewController.swift
-//  FakeNFT
-//
-//  Created by Ruth Dayter on 07.04.2024.
-//
-
 import Foundation
 
 import UIKit
@@ -30,13 +23,22 @@ final class SelectCurrencyViewController: UIViewController {
 
     var onBackToCartViewController: (() -> Void)?
 
+    private var currencyList: [CartCurrency] = []
+    private lazy var alertService = createAlertService()
     private lazy var currencyCollectionView = createCurrencyCollectionView()
     private lazy var payButton = createPayButton()
+    var mock1 = CartCurrency(title: "Bitcoin", name: "BTC", id: "1")
+    var mock2 = CartCurrency(title: "Thether", name: "USDT", id: "2")
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
         viewModel?.viewDidLoad()
+        currencyList = [mock1, mock2]
+        currencyCollectionView.delegate = self
+        currencyCollectionView.dataSource = self
+
     }
 
     @objc private func backButtonDidTap() {
@@ -46,10 +48,28 @@ final class SelectCurrencyViewController: UIViewController {
     @objc private func userAgreementDidTap() {
         viewModel?.userAgreementDidTap()
     }
+    
+    @objc private func payButtonDidTap() {
+        //viewModel?.payButtonDidTap()
+        if viewModel?.selectedCurrency == "1" {
+            alertService?.presentGenericErrorAlert()
+        } else {
+            let viewModel = SuccessfulPaymentViewModel()
+            let controller = SuccessfulPaymentViewController(viewModel: viewModel)
+            controller.onBackToCartViewController = onBackToCartViewController
+            controller.hidesBottomBarWhenPushed = true
+            navigationController?.pushViewController(controller, animated: true)
+        }
+    }
+    
+    @objc private func pullToRefreshDidTrigger() {
+        viewModel?.pullToRefreshDidTrigger()
+    }
 
     private func bindViewModel() {
         let currencyListBinding = { [ weak self ] in
             guard let self else { return }
+            self.currencyList = $0
             self.currencyCollectionView.reloadData()
             self.currencyCollectionView.refreshControl?.endRefreshing()
             ProgressHUD.dismiss()
@@ -61,19 +81,15 @@ final class SelectCurrencyViewController: UIViewController {
             }
         }
 
-        let paymentResultBinding = { [ weak self ] in
-            guard let isPaymentSuccessful: Bool = $0 else { return }
-            self?.presentPaymentResult(isPaymentSuccessful)
-        }
         let bindings = SelectCurrencyViewModelBindings(
+            currencyList: currencyListBinding,
             isViewDismissing: viewDismissBinding,
             isAgreementDisplaying: { [ weak self ] in
                 if $0 {
                     self?.presentAgreement()
                 }
             },
-            isPaymentResultDisplaying: paymentResultBinding,
-            isCurrencyDidSelect: { [ weak self ] in
+            isCurrencySelected: { [ weak self ] in
                 self?.payButton.isEnabled = $0
             })
         viewModel?.bind(bindings)
@@ -84,24 +100,24 @@ final class SelectCurrencyViewController: UIViewController {
         let controller = AgreementViewController(viewModel: viewModel)
         navigationController?.pushViewController(controller, animated: true)
     }
+    
+    private func createAlertService() -> AlertServiceProtocol? {
+        guard let viewModel else { return nil }
+        let alertService = DefaultAlertService(delegate: viewModel, controller: self)
+        return alertService
+    }
+}
 
-    private func presentPaymentResult(_ success: Bool) {
-        if success {
-            let viewModel = SuccessfulPaymentViewModel()
-            let controller = SuccessfulPaymentViewController(viewModel: viewModel)
-            controller.onBackToCartViewController = onBackToCartViewController
-            controller.hidesBottomBarWhenPushed = true
-            navigationController?.pushViewController(controller, animated: true)
-        } else {
-            //TODO
-            print()
-        }
+extension SelectCurrencyViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let selectedCurrency = currencyList[indexPath.item].id
+        viewModel?.didSelectCurrency(selectedCurrency)
     }
 }
 
 extension SelectCurrencyViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        2
+        currencyList.count
     }
 
     func collectionView(
@@ -110,13 +126,13 @@ extension SelectCurrencyViewController: UICollectionViewDataSource {
     ) -> UICollectionViewCell {
         let cell: CurrencyViewCell = collectionView.dequeueReusableCell(indexPath: indexPath)
 
+        let currency = currencyList[indexPath.item]
         cell.viewModel = CurrencyCellViewModel()
+        cell.viewModel?.cellReused(for: currency)
         return cell
     }
 }
 
-
-// MARK: Setup & Layout UI
 private extension SelectCurrencyViewController {
     func setupUI() {
         view.backgroundColor = UIColor(named: "White")
@@ -148,7 +164,7 @@ private extension SelectCurrencyViewController {
             paymentView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             paymentView.heightAnchor.constraint(equalToConstant: Constants.paymentViewHeight)
         ])
-        setupProgress()
+        //setupProgress()
     }
 
     func createCurrencyCollectionView() -> UICollectionView {
@@ -167,8 +183,7 @@ private extension SelectCurrencyViewController {
         layout.itemSize = CGSize(width: cellWidth, height: Constants.cellHeight)
         let collection = UICollectionView(frame: .zero, collectionViewLayout: layout)
         let refreshControl = UIRefreshControl()
-        //TODO
-        //refreshControl.addTarget(self, action: #selector(pullToRefreshDidTrigger), for: .valueChanged)
+        refreshControl.addTarget(self, action: #selector(pullToRefreshDidTrigger), for: .valueChanged)
         collection.refreshControl = refreshControl
         collection.backgroundColor = UIColor(named: "White")
         collection.register(CurrencyViewCell.self)
@@ -180,8 +195,7 @@ private extension SelectCurrencyViewController {
     private func createPayButton() -> RoundedButton {
         let button = RoundedButton(title: "Оплатить")
         button.isEnabled = false
-        //TODO
-        //button.addTarget(self, action: #selector(payButtonDidTap), for: .touchUpInside)
+        button.addTarget(self, action: #selector(payButtonDidTap), for: .touchUpInside)
         return button
     }
 

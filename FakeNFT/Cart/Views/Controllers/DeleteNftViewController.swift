@@ -50,7 +50,7 @@ private extension DeleteNftViewController {
         blurBackground()
 
         let label = UILabel()
-        label.text = NSLocalizedString("Cart.DeleteNftViewController.deleteMessage", comment: "")
+        label.text = "Вы уверены, что хотите удалить объект из корзины?"
         label.font = UIFont(name: "SFProText-Regular", size: 13)
         label.numberOfLines = 0
         label.textAlignment = .center
@@ -62,12 +62,12 @@ private extension DeleteNftViewController {
         messageStack.distribution = .fill
         messageStack.alignment = .center
 
-        let deleteButtonTitle = NSLocalizedString("Cart.DeleteNftViewController.deleteButton", comment: "")
+        let deleteButtonTitle = "Удалить"
         let deleteButton = RoundedButton(title: deleteButtonTitle)
         deleteButton.setTitleColor(UIColor(named: "Red")!, for: .normal)
         deleteButton.addTarget(self, action: #selector(deleteButtonDidTap), for: .touchUpInside)
 
-        let backButtonTitle = NSLocalizedString("Cart.DeleteNftViewController.backButton", comment: "")
+        let backButtonTitle = "Вернуться"
         let backButton = RoundedButton(title: backButtonTitle)
         backButton.addTarget(self, action: #selector(backButtonDidTap), for: .touchUpInside)
 
