@@ -14,4 +14,8 @@ struct AppStrings {
     static let sortByNFTCount = "По количеству NFT"
     static var close = "Закрыть"
   }
+  
+  struct CollectionVC {
+    static var authorInfo = "Автор коллекции:"
+  }
 }
