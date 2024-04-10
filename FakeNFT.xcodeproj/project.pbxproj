@@ -45,6 +45,7 @@
 		BF0BABC22BC6EBD800494F89 /* CartControllerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF0BABC12BC6EBD800494F89 /* CartControllerProtocol.swift */; };
 		BF0BABC42BC6EC5100494F89 /* CatalogCollectionViewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF0BABC32BC6EC5100494F89 /* CatalogCollectionViewData.swift */; };
 		BF0BABC62BC6ED8700494F89 /* CollectionDataRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF0BABC52BC6ED8700494F89 /* CollectionDataRequest.swift */; };
+		BF0BABC82BC6EEC100494F89 /* ProfileUpdateRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF0BABC72BC6EEC100494F89 /* ProfileUpdateRequest.swift */; };
 		BF995FBA2BB47C1000F4E8EC /* SFProText-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BF995FB62BB47C1000F4E8EC /* SFProText-Medium.ttf */; };
 		BF995FBB2BB47C1000F4E8EC /* SFProText-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BF995FB72BB47C1000F4E8EC /* SFProText-Regular.ttf */; };
 		BF995FBC2BB47C1000F4E8EC /* SFProText-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BF995FB82BB47C1000F4E8EC /* SFProText-Bold.ttf */; };
@@ -127,6 +128,7 @@
 		BF0BABC12BC6EBD800494F89 /* CartControllerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartControllerProtocol.swift; sourceTree = "<group>"; };
 		BF0BABC32BC6EC5100494F89 /* CatalogCollectionViewData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogCollectionViewData.swift; sourceTree = "<group>"; };
 		BF0BABC52BC6ED8700494F89 /* CollectionDataRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionDataRequest.swift; sourceTree = "<group>"; };
+		BF0BABC72BC6EEC100494F89 /* ProfileUpdateRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileUpdateRequest.swift; sourceTree = "<group>"; };
 		BF995FB62BB47C1000F4E8EC /* SFProText-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFProText-Medium.ttf"; sourceTree = "<group>"; };
 		BF995FB72BB47C1000F4E8EC /* SFProText-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFProText-Regular.ttf"; sourceTree = "<group>"; };
 		BF995FB82BB47C1000F4E8EC /* SFProText-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFProText-Bold.ttf"; sourceTree = "<group>"; };
@@ -453,6 +455,7 @@
 				BF995FD72BC0834400F4E8EC /* NFTTableViewRequest.swift */,
 				BF0BABBF2BC6EA9200494F89 /* CollectionDataProvider.swift */,
 				BF0BABC52BC6ED8700494F89 /* CollectionDataRequest.swift */,
+				BF0BABC72BC6EEC100494F89 /* ProfileUpdateRequest.swift */,
 			);
 			path = DataProvider;
 			sourceTree = "<group>";
@@ -692,6 +695,7 @@
 				BF995FDD2BC15FAB00F4E8EC /* NetworkClient.swift in Sources */,
 				0C79EE6A2A76DE1000EE90EA /* NftDetailAssembly.swift in Sources */,
 				3FC8C39329D246BA0081F015 /* DateFormatters+Presets.swift in Sources */,
+				BF0BABC82BC6EEC100494F89 /* ProfileUpdateRequest.swift in Sources */,
 				BF995FD02BC0803B00F4E8EC /* NFTCollection.swift in Sources */,
 				BF995FC12BC05D4C00F4E8EC /* CatalogCell.swift in Sources */,
 				0CFCB7422A78013E0009A829 /* Nft.swift in Sources */,

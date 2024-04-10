@@ -1,0 +1,36 @@
+//
+//  ProfileUpdateRequest.swift
+//  FakeNFT
+//
+//  Created by Леонид Турко on 10.04.2024.
+//
+
+import Foundation
+
+struct ProfileUpdateRequest: NetworkRequest {
+  
+  let profileModel: ProfileModel
+  
+  var endpoint: URL? {
+    var urlComponents = URLComponents(string: "\(RequestConstants.baseURL)/api/v1/profile/1")
+    var components: [URLQueryItem] = []
+    
+    if let likes = profileModel.likes {
+      for like in likes {
+        components.append(URLQueryItem(name: "likes", value: like))
+      }
+    }
+    
+    urlComponents?.queryItems = components
+    return urlComponents?.url
+  }
+  var httpMethod: HttpMethod {
+    return .put
+  }
+  
+  var isUrlEncoded: Bool {
+    return true
+  }
+  
+  var dto: Encodable?
+}
