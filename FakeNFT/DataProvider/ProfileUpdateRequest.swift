@@ -21,6 +21,12 @@ struct ProfileUpdateRequest: NetworkRequest {
       }
     }
     
+    if let nfts = profileModel.nfts {
+      for nft in nfts {
+        components.append(URLQueryItem(name: "nfts", value: nft))
+      }
+    }
+    
     urlComponents?.queryItems = components
     return urlComponents?.url
   }

@@ -22,7 +22,7 @@ final class CatalogCell: UITableViewCell, ReuseIdentifying {
     var label = UILabel()
     label.numberOfLines = 1
     label.font = UIFont.systemFont(ofSize: 17, weight: .bold)
-    label.textColor = UIColor(named: "ypBlack")
+    label.textColor = .ypBlack
     return label
   }()
   

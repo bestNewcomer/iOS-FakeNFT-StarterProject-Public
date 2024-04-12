@@ -9,6 +9,7 @@ import UIKit
 import Kingfisher
 
 // MARK: - Protocol
+
 protocol CatalogViewControllerProtocol: AnyObject {
   func reloadTableView()
 }
@@ -43,8 +44,11 @@ final class CatalogViewController: UIViewController, CatalogViewControllerProtoc
     return tableView
   }()
   
-  init(presenter: CatalogPresenterProtocol) {
+  private let cartService: CartControllerProtocol
+  
+  init(presenter: CatalogPresenterProtocol, cartService: CartControllerProtocol) {
     self.presenter = presenter
+    self.cartService = cartService
     super.init(nibName: nil, bundle: nil)
   }
   
@@ -61,7 +65,6 @@ final class CatalogViewController: UIViewController, CatalogViewControllerProtoc
     presenter.viewController = self
     loadNFTCollections()
     view.backgroundColor = .ypWhite
-    self.collectionsRefreshControl.endRefreshing()
   }
   
   private func setupNavigationBar() {
@@ -73,6 +76,7 @@ final class CatalogViewController: UIViewController, CatalogViewControllerProtoc
   private func setupConstraints() {
     
     view.addSubview(tableView)
+    tableView.refreshControl = collectionsRefreshControl
     
     NSLayoutConstraint.activate([
       tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
@@ -83,8 +87,9 @@ final class CatalogViewController: UIViewController, CatalogViewControllerProtoc
   }
   
   func reloadTableView() {
-    DispatchQueue.main.async {
-      self.tableView.reloadData()
+    DispatchQueue.main.async { [weak self] in
+      self?.tableView.reloadData()
+      self?.collectionsRefreshControl.endRefreshing()
     }
   }
   
@@ -132,5 +137,15 @@ extension CatalogViewController: UITableViewDelegate, UITableViewDataSource {
   
   func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
     187
+  }
+  
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    let nftModel = presenter.getDataSource()[indexPath.row]
+    let dataProvider = CollectionDataProvider(networkClient: DefaultNetworkClient())
+    let presenter = CatalogСollectionPresenter(nftModel: nftModel, dataProvider: dataProvider, cartController: cartService)
+    let viewController = CatalogСollectionViewController(presenter: presenter)
+    viewController.hidesBottomBarWhenPushed = true
+    
+    navigationController?.pushViewController(viewController, animated: true)
   }
 }
