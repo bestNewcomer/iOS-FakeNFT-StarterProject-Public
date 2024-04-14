@@ -19,6 +19,7 @@ final class PaymentViewController: UIViewController, PaymentViewControllerProtoc
     
     private var presenter: PaymentPresenterProtocol?
     private let termsUrl = URL(string: "https://yandex.ru/legal/practicum_termsofuse/")
+    private var cartPresenter: CartPresenter?
     
     init() {
         super.init(nibName: nil, bundle: nil)

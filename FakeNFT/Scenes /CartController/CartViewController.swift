@@ -80,7 +80,9 @@ final class CartViewController: UIViewController, CartViewControllerProtocol {
         
         setupViews()
         setupConstraints()
+
         presenter = CartPresenter(viewController: self)
+        
         cartTable.register(CartTableViewCell.self, forCellReuseIdentifier: "CartTableViewCell")
         cartTable.delegate = self
         cartTable.dataSource = self
