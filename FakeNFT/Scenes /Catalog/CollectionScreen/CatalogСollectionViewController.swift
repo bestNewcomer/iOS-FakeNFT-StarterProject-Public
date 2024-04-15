@@ -14,6 +14,7 @@ import ProgressHUD
 protocol CatalogСollectionViewControllerProtocol: AnyObject {
   func renderViewData(viewData: CatalogCollectionViewData)
   func reloadCollectionView()
+  func reloadVisibleCells()
 }
 
 // MARK: - Final Class
@@ -181,7 +182,7 @@ final class CatalogСollectionViewController: UIViewController {
   }
   
   private func setupNavBackButton() {
-    navigationController!.navigationBar.tintColor = .ypBlack
+    navigationController?.navigationBar.tintColor = .ypBlack
     navigationItem.leftBarButtonItem = UIBarButtonItem(
       image: UIImage(named:"backward"),
       style: .plain,
@@ -202,7 +203,18 @@ final class CatalogСollectionViewController: UIViewController {
     navigationController?.popViewController(animated: true)
   }
   
-  @objc func launchWebsiteViewer() { }
+  @objc func launchWebsiteViewer(_ gesture: UITapGestureRecognizer) {
+    let urlString = presenter.getUserProfile()?.website ?? ""
+    
+    if let url = URL(string: urlString) {
+      let webPresenter = WebViewPresenter()
+      let webVC = WebViewController(presenter: webPresenter, url: url)
+      setupNavBackButton()
+      webVC.hidesBottomBarWhenPushed = true
+      navigationItem.backBarButtonItem =  UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+      navigationController?.pushViewController(webVC, animated: true)
+    }
+  }
 }
 
 // MARK: - UICollectionViewDataSource, UICollectionViewDelegate
@@ -242,7 +254,7 @@ extension CatalogСollectionViewController: UICollectionViewDataSource, UICollec
 extension CatalogСollectionViewController: NFTCollectionCellDelegate {
   func onLikeButtonTapped(cell: NFTCollectionCell) {
     guard let nftModel = cell.getNftModel() else { return }
-    presenter.toggleLikeStatus(model: nftModel, cell.setIsLiked)
+    presenter.toggleLikeStatus(model: nftModel)
   }
   
   func addToCartButtonTapped(cell: NFTCollectionCell) {
@@ -264,15 +276,33 @@ extension CatalogСollectionViewController: CatalogСollectionViewControllerProt
     }
   }
   
+  func reloadVisibleCells() {
+    DispatchQueue.main.async { [weak self] in
+      guard let self = self else { return }
+      
+      self.nftCollection.visibleCells.forEach { cell in
+        guard let nftCell = cell as? NFTCollectionCell else {
+          // Handle unexpected cell type if necessary
+          return
+        }
+        nftCell.updateLikeButtonImage()
+        nftCell.updateCartButtonImage()
+      }
+    }
+  }
+  
+  
   private func loadCoverImage(url : String) {
-    guard let imageUrl = URL(string: url.urlDecoder) else {
+    guard let imageUrl = URL(string: url.urlDecoder ?? "") else {
       return
     }
     coverImageView.kf.setImage(with: imageUrl)
   }
   
   func reloadCollectionView() {
-    DispatchQueue.main.async {
+    DispatchQueue.main.async { [weak self] in
+      guard let self = self else { return }
+      
       self.nftCollection.reloadData()
     }
   }

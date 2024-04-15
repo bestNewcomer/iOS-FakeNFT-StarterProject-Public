@@ -15,12 +15,12 @@ struct ProfileModel: Codable {
   let likes: [String]?
   let id: String
   
-  func update(newLikes: [String]?) -> ProfileModel {
+  func update(newLikes: [String]? = nil, newNfts: [String]? = nil) -> ProfileModel {
     .init(
       name: name,
       description: description,
       website: website,
-      nfts: nfts,
+      nfts: newNfts ?? nfts,
       likes: newLikes ?? likes,
       id: id
     )

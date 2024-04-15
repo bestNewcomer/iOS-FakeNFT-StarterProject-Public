@@ -53,7 +53,7 @@ struct DefaultNetworkClient: NetworkClient {
         onResponse(.failure(NetworkClientError.urlRequestError(error)))
         return
       } else {
-        assertionFailure("Unexpected condition!")
+        assertionFailure("Unexpected condition.")
         return
       }
     }

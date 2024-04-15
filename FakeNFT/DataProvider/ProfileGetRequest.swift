@@ -8,5 +8,5 @@
 import Foundation
 
 struct ProfileGetRequest: NetworkRequest {
-    var endpoint = URL(string: "\(RequestConstants.baseURL)/api/v1/profile/1")
+  var endpoint = URL(string: "\(RequestConstants.baseURL)/api/v1/profile/1")
 }

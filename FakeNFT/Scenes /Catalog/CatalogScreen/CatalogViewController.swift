@@ -127,7 +127,7 @@ extension CatalogViewController: UITableViewDelegate, UITableViewDataSource {
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell: CatalogCell = tableView.dequeueReusableCell()
     let nftModel = presenter.getDataSource()[indexPath.row]
-    let url = URL(string: nftModel.cover.urlDecoder)
+    let url = URL(string: nftModel.cover.urlDecoder ?? "")
     
     cell.selectionStyle = .none
     cell.setCellImage(with: url)

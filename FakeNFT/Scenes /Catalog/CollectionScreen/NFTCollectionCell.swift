@@ -19,9 +19,6 @@ final class NFTCollectionCell: UICollectionViewCell, ReuseIdentifying {
   private var nftModel: Nft?
   var presenter: CatalogСollectionPresenterProtocol?
   
-  private var isLiked: Bool = false
-  private var itemInCart: Bool = false
-  
   weak var delegate: NFTCollectionCellDelegate?
   
   private lazy var nftImage: UIImageView = {
@@ -142,10 +139,6 @@ final class NFTCollectionCell: UICollectionViewCell, ReuseIdentifying {
     nftModel = model
   }
   
-  func setIsLiked(isLiked: Bool) -> Void {
-    self.isLiked = isLiked
-  }
-  
   func getNftModel() -> Nft? {
     return nftModel
   }
@@ -160,23 +153,18 @@ final class NFTCollectionCell: UICollectionViewCell, ReuseIdentifying {
     nftName.text = nftModel.name
     nftPrice.text = "\(nftModel.price) ETH"
     ratingStarsView.configureRating(nftModel.rating)
-    likeButton.setImage(UIImage(named: nftModel.isLiked ?? false ? "likeActive" : "likeNotActive"), for: .normal)
-    
-    let isAlreadyLiked = presenter?.isAlreadyLiked(nftId: nftModel.id) ?? false
-    configureLikeButtonImage(isAlreadyLiked)
+    updateCartButtonImage()
+    updateLikeButtonImage()
   }
   
   private func configureLikeButtonImage(_ isAlreadyLiked: Bool) {
-    let likeName = self.isLiked ? "likeActive" : "likeNotActive"
+    let likeName = isAlreadyLiked ? "likeActive" : "likeNotActive"
     likeButton.setImage(UIImage(named: likeName), for: .normal)
   }
   
-  private func configureCartButtonImage() {
-    itemInCart.toggle()
-    let cartImage = itemInCart ? "addToCart" : "deleteFromCart"
+  private func configureCartButtonImage(_ isAlreadyInCart: Bool) {
+    let cartImage = isAlreadyInCart ? "deleteFromCart" : "addToCart"
     cartButton.setImage(UIImage(named: cartImage)?.withRenderingMode(.alwaysTemplate), for: .normal)
-    
-    
   }
   
   func updateLikeButtonImage() {
@@ -185,21 +173,21 @@ final class NFTCollectionCell: UICollectionViewCell, ReuseIdentifying {
     configureLikeButtonImage(isAlreadyLiked)
   }
   
-  func updateCartButton() {
-    configureCartButtonImage()
+  func updateCartButtonImage() {
+    guard let nftModel = nftModel else { return }
+    let isAlreadyInCart = presenter?.isAlreadyInCart(nftId: nftModel.id) ?? false
+    configureCartButtonImage(isAlreadyInCart)
   }
   
   // MARK: - @objc func
   
   @objc func userDidLike() {
-    guard let nftModel = nftModel else { return }
-    let isAlreadyLiked = presenter?.isAlreadyLiked(nftId: nftModel.id) ?? false
-    configureLikeButtonImage(isAlreadyLiked)
+    updateLikeButtonImage()
     delegate?.onLikeButtonTapped(cell: self)
   }
   
   @objc func cartItemAdded() {
-    configureCartButtonImage()
+    updateCartButtonImage()
     delegate?.addToCartButtonTapped(cell: self)
   }
 }
