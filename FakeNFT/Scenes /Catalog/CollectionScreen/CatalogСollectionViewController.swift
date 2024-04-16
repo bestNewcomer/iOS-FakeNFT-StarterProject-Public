@@ -45,6 +45,7 @@ final class CatalogСollectionViewController: UIViewController {
   private lazy var coverImageView: UIImageView = {
     let image = UIImageView()
     image.layer.cornerRadius = 12
+    image.layer.masksToBounds = true
     image.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
     return image
   }()
@@ -161,10 +162,11 @@ final class CatalogСollectionViewController: UIViewController {
       
       authorLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8),
       authorLabel.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
+      authorLabel.widthAnchor.constraint(equalToConstant: 114),
       
       authorLink.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8),
       authorLink.leadingAnchor.constraint(equalTo: authorLabel.trailingAnchor, constant: 4),
-      authorLink.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: 16),
+      authorLink.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
       authorLink.bottomAnchor.constraint(equalTo: authorLabel.bottomAnchor, constant: 1),
       authorLink.heightAnchor.constraint(equalToConstant: 28),
       
