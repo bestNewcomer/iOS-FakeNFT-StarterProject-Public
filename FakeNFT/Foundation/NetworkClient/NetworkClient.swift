@@ -53,7 +53,7 @@ struct DefaultNetworkClient: NetworkClient {
         onResponse(.failure(NetworkClientError.urlRequestError(error)))
         return
       } else {
-        assertionFailure("Unexpected condition!")
+        assertionFailure("Unexpected condition.")
         return
       }
     }
@@ -94,6 +94,10 @@ struct DefaultNetworkClient: NetworkClient {
        let dtoEncoded = try? encoder.encode(dto) {
       urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
       urlRequest.httpBody = dtoEncoded
+    }
+    
+    if (request.isUrlEncoded) {
+      urlRequest.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
     }
     
     if let token = request.token {

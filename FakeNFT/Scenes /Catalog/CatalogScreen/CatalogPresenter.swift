@@ -31,7 +31,6 @@ final class CatalogPresenter: CatalogPresenterProtocol {
     self.dataProvider = dataProvider
   }
   
-  
   func fetchCollections(completion: @escaping ([NFTCollection]) -> Void) {
     dataProvider.fetchNFTCollection { [weak self] updatedData in
       self?.viewController?.reloadTableView()

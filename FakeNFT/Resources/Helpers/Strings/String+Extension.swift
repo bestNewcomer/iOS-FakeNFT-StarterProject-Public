@@ -12,7 +12,7 @@ extension String {
     return self.addingPercentEncoding(withAllowedCharacters: NSCharacterSet.urlQueryAllowed)!
   }
   
-  var urlDecoder: String {
+  var urlDecoder: String? {
     return self.removingPercentEncoding!
   }
 }
