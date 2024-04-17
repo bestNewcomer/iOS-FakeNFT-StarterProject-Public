@@ -180,17 +180,20 @@ final class CartViewController: UIViewController, CartViewControllerProtocol {
         
         alert.addAction(UIAlertAction(title: "По цене", style: .default, handler: { [weak self] (UIAlertAction) in
             guard let self = self else { return }
-            //TODO: реализовать сортировку
+            self.presenter?.sortCart(filter: .price)
+            self.cartTable.reloadData()
         } ))
         
         alert.addAction(UIAlertAction(title: "По рейтингу", style: .default, handler: { [weak self] (UIAlertAction) in
             guard let self = self else { return }
-            //TODO: реализовать сортировку
+            self.presenter?.sortCart(filter: .rating)
+            self.cartTable.reloadData()
         } ))
         
         alert.addAction(UIAlertAction(title: "По названию", style: .default, handler: { [weak self] (UIAlertAction) in
             guard let self = self else { return }
-            //TODO: реализовать сортировку
+            self.presenter?.sortCart(filter: .title)
+            self.cartTable.reloadData()
         } ))
         
         alert.addAction(UIAlertAction(title: "Закрыть", style: .cancel, handler: { (UIAlertAction) in
