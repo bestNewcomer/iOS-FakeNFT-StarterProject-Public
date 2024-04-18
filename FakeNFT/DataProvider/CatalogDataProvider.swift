@@ -11,7 +11,7 @@ import ProgressHUD
 // MARK: - Protocol
 
 protocol CatalogDataProviderProtocol: AnyObject {
-  func fetchNFTCollection(completion: @escaping ([NFTCollection]) -> Void)
+  func fetchNFTCollection(completion: @escaping ([NFTCollection], Error?) -> Void)
   func sortNFTCollections(by: NFTCollectionsSortOptions)
   func getCollectionNFT() -> [NFTCollection]
 }
@@ -30,16 +30,16 @@ final class CatalogDataProvider: CatalogDataProviderProtocol {
     return self.collectionNFT
   }
   
-  func fetchNFTCollection(completion: @escaping ([NFTCollection]) -> Void) {
+  func fetchNFTCollection(completion: @escaping ([NFTCollection], Error?) -> Void) {
     ProgressHUD.show()
     networkClient.send(request: NFTTableViewRequest(), type: [NFTCollection].self) { [weak self] result in
       guard let self = self else { return }
       switch result {
       case .success(let nft):
         self.collectionNFT = nft
-        completion(nft)
-      case .failure(_):
-        break
+        completion(nft, nil)
+      case .failure(let error):
+        completion([], error)
       }
       ProgressHUD.dismiss()
     }
