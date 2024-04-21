@@ -18,20 +18,20 @@ struct CartFilter {
         case title
     }
     
-    static var filterById: FilterClosure = { a, b in
-        return a.id < b.id
+    static var filterById: FilterClosure = { first, second in
+        first.id < second.id
     }
     
-    static var filterByPrice: FilterClosure = { a, b in
-        return a.price < b.price
+    static var filterByPrice: FilterClosure = { first, second in
+        return first.price < second.price
     }
     
-    static var filterByRating: FilterClosure = { a, b in
-        return a.rating > b.rating
+    static var filterByRating: FilterClosure = { first, second in
+        return first.rating > second.rating
     }
     
-    static var filterByTitle: FilterClosure = { a, b in
-        return a.name < b.name
+    static var filterByTitle: FilterClosure = { first, second in
+        return first.name < second.name
     }
     
     static let filter: [FilterBy:FilterClosure] = [.id: filterById, .price: filterByPrice, .rating: filterByRating, .title: filterByTitle]
