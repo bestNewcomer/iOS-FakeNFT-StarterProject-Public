@@ -14,10 +14,15 @@ final class AppConfiguration {
   
   init() {
     let dataProvider = CatalogDataProvider(networkClient: DefaultNetworkClient())
-    let catalogPresenter = CatalogPresenter(dataProvider: dataProvider)
+    let router = CatalogRouter()
+    
+    let catalogPresenter = CatalogPresenter(dataProvider: dataProvider, router: router)
     cartService = CartService()
     
-    catalogViewController = CatalogViewController(presenter: catalogPresenter, cartService: cartService)
+    let catalogViewController = CatalogViewController(presenter: catalogPresenter, cartService: cartService)
+    self.catalogViewController = catalogViewController
+    catalogPresenter.viewController = catalogViewController
     catalogNavigationController = UINavigationController(rootViewController: catalogViewController)
+    router.viewController = catalogViewController
   }
 }

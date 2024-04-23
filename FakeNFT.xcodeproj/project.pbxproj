@@ -49,6 +49,7 @@
 		BF0BABCA2BC6F03500494F89 /* ProfileGetRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF0BABC92BC6F03500494F89 /* ProfileGetRequest.swift */; };
 		BF0BABCD2BC6F26600494F89 /* DynamicRatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF0BABCC2BC6F26600494F89 /* DynamicRatingView.swift */; };
 		BF3CCACA2BCECE1100B66B53 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = BF3CCAC92BCECE1100B66B53 /* Localizable.strings */; };
+		BF3CCACE2BD1A87900B66B53 /* CatalogRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3CCACD2BD1A87900B66B53 /* CatalogRouter.swift */; };
 		BF995FBA2BB47C1000F4E8EC /* SFProText-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BF995FB62BB47C1000F4E8EC /* SFProText-Medium.ttf */; };
 		BF995FBB2BB47C1000F4E8EC /* SFProText-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BF995FB72BB47C1000F4E8EC /* SFProText-Regular.ttf */; };
 		BF995FBC2BB47C1000F4E8EC /* SFProText-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BF995FB82BB47C1000F4E8EC /* SFProText-Bold.ttf */; };
@@ -144,6 +145,7 @@
 		BF0BABC92BC6F03500494F89 /* ProfileGetRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileGetRequest.swift; sourceTree = "<group>"; };
 		BF0BABCC2BC6F26600494F89 /* DynamicRatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicRatingView.swift; sourceTree = "<group>"; };
 		BF3CCAC92BCECE1100B66B53 /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
+		BF3CCACD2BD1A87900B66B53 /* CatalogRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogRouter.swift; sourceTree = "<group>"; };
 		BF995FB62BB47C1000F4E8EC /* SFProText-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFProText-Medium.ttf"; sourceTree = "<group>"; };
 		BF995FB72BB47C1000F4E8EC /* SFProText-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFProText-Regular.ttf"; sourceTree = "<group>"; };
 		BF995FB82BB47C1000F4E8EC /* SFProText-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFProText-Bold.ttf"; sourceTree = "<group>"; };
@@ -515,6 +517,7 @@
 				BF995FC02BC05D4C00F4E8EC /* CatalogCell.swift */,
 				BF995FC52BC07DA300F4E8EC /* CatalogViewController.swift */,
 				BF995FC72BC07DFE00F4E8EC /* CatalogPresenter.swift */,
+				BF3CCACD2BD1A87900B66B53 /* CatalogRouter.swift */,
 			);
 			path = CatalogScreen;
 			sourceTree = "<group>";
@@ -751,6 +754,7 @@
 				BF0BABC82BC6EEC100494F89 /* ProfileUpdateRequest.swift in Sources */,
 				BF995FD02BC0803B00F4E8EC /* NFTCollection.swift in Sources */,
 				BF995FC12BC05D4C00F4E8EC /* CatalogCell.swift in Sources */,
+				BF3CCACE2BD1A87900B66B53 /* CatalogRouter.swift in Sources */,
 				0CFCB7422A78013E0009A829 /* Nft.swift in Sources */,
 				BFCDD3902BC96EA00092A3CD /* WebViewController.swift in Sources */,
 				BF995FDB2BC0853500F4E8EC /* AppConfiguration.swift in Sources */,
