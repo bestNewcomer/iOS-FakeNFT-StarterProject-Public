@@ -117,6 +117,7 @@ struct DefaultNetworkClient: NetworkClient {
 
         var urlRequest = URLRequest(url: endpoint)
         urlRequest.httpMethod = request.httpMethod.rawValue
+        urlRequest.setValue("107f0274-8faf-4343-b31f-c12b62673e2f", forHTTPHeaderField: "X-Practicum-Mobile-Token")
 
         if let dto = request.dto,
            let dtoEncoded = try? encoder.encode(dto) {

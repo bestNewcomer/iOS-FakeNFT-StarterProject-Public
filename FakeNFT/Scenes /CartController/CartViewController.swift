@@ -11,7 +11,10 @@ final class CartViewController: UIViewController, CartViewControllerProtocol {
     
     private var presenter: CartPresenterProtocol?
     
-    init() {
+    let servicesAssembly: ServicesAssembly
+    
+    init(servicesAssembly: ServicesAssembly) {
+        self.servicesAssembly = servicesAssembly
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -87,6 +90,23 @@ final class CartViewController: UIViewController, CartViewControllerProtocol {
         cartTable.delegate = self
         cartTable.dataSource = self
         showPlaceholder()
+        
+        print(UserDefaults.standard)
+        let sorting = UserDefaults.standard.string(forKey: "Sort")
+        if sorting == nil {
+            print()
+        } else {
+            switch sorting {
+            case "Цена":
+                self.presenter?.sortCart(filter: .price)
+            case "Рейтинг":
+                self.presenter?.sortCart(filter: .rating)
+            case "Название":
+                self.presenter?.sortCart(filter: .title)
+            default:
+                print()
+            }
+        }
     }
     
     private func setupNavigationBar() {
@@ -156,7 +176,7 @@ final class CartViewController: UIViewController, CartViewControllerProtocol {
             guard let count = presenter?.count() else { return }
             guard let totalPrice = presenter?.totalPrice() else { return }
             countNftInCartLabel.text = "\(count) NFT"
-            totalPriceLabel.text = "\(totalPrice) ETH"
+            totalPriceLabel.text = "\(round(totalPrice * 100) / 100) ETH"
             placeholderLabel.isHidden = true
             bottomView.isHidden = false
             cartTable.reloadData()
@@ -176,21 +196,35 @@ final class CartViewController: UIViewController, CartViewControllerProtocol {
     }
     
     @objc private func didTapSortButton() {
+        
         let alert = UIAlertController(title: "Сортировка", message: nil, preferredStyle: .actionSheet)
         
         alert.addAction(UIAlertAction(title: "По цене", style: .default, handler: { [weak self] (UIAlertAction) in
             guard let self = self else { return }
-            //TODO: реализовать сортировку
+            self.presenter?.sortCart(filter: .price)
+            self.cartTable.reloadData()
+            
+            UserDefaults.standard.set("Цена", forKey: "Sort")
+            print(UserDefaults.standard)
+            UserDefaults.standard.synchronize()
         } ))
         
         alert.addAction(UIAlertAction(title: "По рейтингу", style: .default, handler: { [weak self] (UIAlertAction) in
             guard let self = self else { return }
-            //TODO: реализовать сортировку
+            self.presenter?.sortCart(filter: .rating)
+            self.cartTable.reloadData()
+            
+            UserDefaults.standard.set("Рейтинг", forKey: "Sort")
+            UserDefaults.standard.synchronize()
         } ))
         
         alert.addAction(UIAlertAction(title: "По названию", style: .default, handler: { [weak self] (UIAlertAction) in
             guard let self = self else { return }
-            //TODO: реализовать сортировку
+            self.presenter?.sortCart(filter: .title)
+            self.cartTable.reloadData()
+            
+            UserDefaults.standard.set("Название", forKey: "Sort")
+            UserDefaults.standard.synchronize()
         } ))
         
         alert.addAction(UIAlertAction(title: "Закрыть", style: .cancel, handler: { (UIAlertAction) in
@@ -230,7 +264,7 @@ extension CartViewController: UITableViewDelegate {
 
 extension CartViewController: CartTableViewCellDelegate {
     func didTapDeleteButton(id: String, image: UIImage) {
-        let deleteViewController = CartDeleteViewController(nftImage: image, idForDelete: id)
+        let deleteViewController = CartDeleteViewController(servicesAssembly: servicesAssembly, nftImage: image, idForDelete: id)
         deleteViewController.modalPresentationStyle = .overCurrentContext
         self.tabBarController?.present(deleteViewController, animated: true)
     }

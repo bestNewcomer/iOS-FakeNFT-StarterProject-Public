@@ -56,6 +56,12 @@
 		D472B7282BCB5F02006B8A12 /* CartDeletePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D472B7272BCB5F02006B8A12 /* CartDeletePresenter.swift */; };
 		D472B72A2BCB67EC006B8A12 /* SuccessPayController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D472B7292BCB67EC006B8A12 /* SuccessPayController.swift */; };
 		D472B72C2BCB6828006B8A12 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D472B72B2BCB6828006B8A12 /* WebViewController.swift */; };
+		D4D1074A2BD04D9E001AA307 /* CartFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D107492BD04D9E001AA307 /* CartFilter.swift */; };
+		D4D1074C2BD085C2001AA307 /* OrderService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D1074B2BD085C2001AA307 /* OrderService.swift */; };
+		D4D1074E2BD086B7001AA307 /* OrderStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D1074D2BD086B7001AA307 /* OrderStorage.swift */; };
+		D4D107502BD086EE001AA307 /* OrderDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D1074F2BD086EE001AA307 /* OrderDataModel.swift */; };
+		D4D107522BD08773001AA307 /* ChangeOrderRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D107512BD08773001AA307 /* ChangeOrderRequest.swift */; };
+		D4D107542BD087A4001AA307 /* ChangedOrderDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D107532BD087A4001AA307 /* ChangedOrderDataModel.swift */; };
 		E19CD5AB2A98B56600CA39A5 /* NftImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E19CD5AA2A98B56600CA39A5 /* NftImageCollectionViewCell.swift */; };
 		E1A1B9DA2AA01CE400C3AFBC /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A1B9D92AA01CE400C3AFBC /* TabBarController.swift */; };
 		E1CD40DC2A96BECC00BE7FE8 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = E1CD40DB2A96BECC00BE7FE8 /* Localizable.strings */; };
@@ -130,6 +136,12 @@
 		D472B7272BCB5F02006B8A12 /* CartDeletePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartDeletePresenter.swift; sourceTree = "<group>"; };
 		D472B7292BCB67EC006B8A12 /* SuccessPayController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuccessPayController.swift; sourceTree = "<group>"; };
 		D472B72B2BCB6828006B8A12 /* WebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
+		D4D107492BD04D9E001AA307 /* CartFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartFilter.swift; sourceTree = "<group>"; };
+		D4D1074B2BD085C2001AA307 /* OrderService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderService.swift; sourceTree = "<group>"; };
+		D4D1074D2BD086B7001AA307 /* OrderStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderStorage.swift; sourceTree = "<group>"; };
+		D4D1074F2BD086EE001AA307 /* OrderDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderDataModel.swift; sourceTree = "<group>"; };
+		D4D107512BD08773001AA307 /* ChangeOrderRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeOrderRequest.swift; sourceTree = "<group>"; };
+		D4D107532BD087A4001AA307 /* ChangedOrderDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangedOrderDataModel.swift; sourceTree = "<group>"; };
 		D4DF26152BCC2CBF0039E1D4 /* Cart.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = Cart.md; sourceTree = "<group>"; };
 		E19CD5AA2A98B56600CA39A5 /* NftImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NftImageCollectionViewCell.swift; sourceTree = "<group>"; };
 		E1A1B9D92AA01CE400C3AFBC /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
@@ -214,6 +226,7 @@
 			isa = PBXGroup;
 			children = (
 				0CFCB74D2A7817DC0009A829 /* NftStorage.swift */,
+				D4D1074D2BD086B7001AA307 /* OrderStorage.swift */,
 			);
 			path = MemoryStorage;
 			sourceTree = "<group>";
@@ -286,6 +299,7 @@
 				3FC8C38F29D245250081F015 /* Requests */,
 				0C79EE6B2A76DE2E00EE90EA /* ServicesAssemly.swift */,
 				0CFCB73F2A78002A0009A829 /* NftService.swift */,
+				D4D1074B2BD085C2001AA307 /* OrderService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -318,6 +332,7 @@
 			isa = PBXGroup;
 			children = (
 				3F6806D829CC979D00B4F915 /* Network */,
+				D4D107492BD04D9E001AA307 /* CartFilter.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -350,6 +365,8 @@
 				0CFCB7412A78013E0009A829 /* Nft.swift */,
 				D472B70F2BC9E46C006B8A12 /* NftDataModel.swift */,
 				D472B7202BC9F512006B8A12 /* CurrencyDataModel.swift */,
+				D4D1074F2BD086EE001AA307 /* OrderDataModel.swift */,
+				D4D107532BD087A4001AA307 /* ChangedOrderDataModel.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -360,6 +377,7 @@
 				3FC8C39029D2453B0081F015 /* ExampleRequest.swift */,
 				0C79EE602A76DCD600EE90EA /* NftByIdRequest.swift */,
 				0C79EE622A76DD1900EE90EA /* RequestConstants.swift */,
+				D4D107512BD08773001AA307 /* ChangeOrderRequest.swift */,
 			);
 			path = Requests;
 			sourceTree = "<group>";
@@ -440,6 +458,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				D4819C3C2BD4FAB200AA0E3A /* PBXTargetDependency */,
 			);
 			name = FakeNFT;
 			packageProductDependencies = (
@@ -564,7 +583,7 @@
 /* Begin PBXShellScriptBuildPhase section */
 		3FC8C39529D24CDB0081F015 /* Swiftlint */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 12;
 			files = (
 			);
 			inputFileListPaths = (
@@ -578,7 +597,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export PATH=\"$PATH:/opt/homebrew/bin\"\nif which swiftlint > /dev/null; then\n  swiftlint --fix && swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+			shellScript = "export PATH=\"$PATH:/opt/homebrew/bin\"\nif which swiftlint > /dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -590,12 +609,15 @@
 				D472B7102BC9E46C006B8A12 /* NftDataModel.swift in Sources */,
 				D472B70E2BC9E288006B8A12 /* CartPresenter.swift in Sources */,
 				3FC8C38B29D242E90081F015 /* ProductDetailsTableViewCell.swift in Sources */,
+				D4D1074A2BD04D9E001AA307 /* CartFilter.swift in Sources */,
 				D472B7182BC9EEC3006B8A12 /* RatingView.swift in Sources */,
 				3F478ECF29DB474E00F6D39E /* Colors.swift in Sources */,
 				0C79EE662A76DDFF00EE90EA /* NftDetailViewController.swift in Sources */,
 				D472B7232BCB5DAC006B8A12 /* CurrencyCollectionViewCell.swift in Sources */,
+				D4D107542BD087A4001AA307 /* ChangedOrderDataModel.swift in Sources */,
 				E1A1B9DA2AA01CE400C3AFBC /* TabBarController.swift in Sources */,
 				3F478ED129DB476500F6D39E /* Fonts.swift in Sources */,
+				D4D107522BD08773001AA307 /* ChangeOrderRequest.swift in Sources */,
 				D472B71A2BC9F1E4006B8A12 /* LoaderView.swift in Sources */,
 				D472B7162BC9EE11006B8A12 /* CartTableViewCell.swift in Sources */,
 				D472B71F2BC9F49B006B8A12 /* PaymentPresenter.swift in Sources */,
@@ -609,6 +631,7 @@
 				3F6806D529CBBEC700B4F915 /* NetworkTask.swift in Sources */,
 				0CF2C2DB2A783C1B00FDC837 /* LoadingView.swift in Sources */,
 				3F68069729CBBAF100B4F915 /* AppDelegate.swift in Sources */,
+				D4D1074C2BD085C2001AA307 /* OrderService.swift in Sources */,
 				3F68069929CBBAF100B4F915 /* SceneDelegate.swift in Sources */,
 				D472B71D2BC9F27D006B8A12 /* PaymentViewController.swift in Sources */,
 				0C79EE6C2A76DE2E00EE90EA /* ServicesAssemly.swift in Sources */,
@@ -629,8 +652,10 @@
 				D472B7142BC9E56A006B8A12 /* CartViewController.swift in Sources */,
 				D472B7282BCB5F02006B8A12 /* CartDeletePresenter.swift in Sources */,
 				D472B72A2BCB67EC006B8A12 /* SuccessPayController.swift in Sources */,
+				D4D107502BD086EE001AA307 /* OrderDataModel.swift in Sources */,
 				3F6806D129CBBE6B00B4F915 /* NetworkClient.swift in Sources */,
 				0CFCB7442A7802440009A829 /* NftDetailInput.swift in Sources */,
+				D4D1074E2BD086B7001AA307 /* OrderStorage.swift in Sources */,
 				0C79EE632A76DD1900EE90EA /* RequestConstants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -663,6 +688,10 @@
 			isa = PBXTargetDependency;
 			target = 3F68069229CBBAF100B4F915 /* FakeNFT */;
 			targetProxy = 3F6806B429CBBAF200B4F915 /* PBXContainerItemProxy */;
+		};
+		D4819C3C2BD4FAB200AA0E3A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = D4819C3B2BD4FAB200AA0E3A /* SwiftLintPlugin */;
 		};
 /* End PBXTargetDependency section */
 
@@ -981,6 +1010,14 @@
 				minimumVersion = 7.0.0;
 			};
 		};
+		D4819C3A2BD4F52300AA0E3A /* XCRemoteSwiftPackageReference "SwiftLint" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/realm/SwiftLint.git";
+			requirement = {
+				kind = exactVersion;
+				version = 0.52.4;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -993,6 +1030,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 3F603CCE29DB4A74000C43D7 /* XCRemoteSwiftPackageReference "Kingfisher" */;
 			productName = Kingfisher;
+		};
+		D4819C3B2BD4FAB200AA0E3A /* SwiftLintPlugin */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D4819C3A2BD4F52300AA0E3A /* XCRemoteSwiftPackageReference "SwiftLint" */;
+			productName = "plugin:SwiftLintPlugin";
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

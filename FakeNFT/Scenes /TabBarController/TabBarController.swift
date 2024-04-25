@@ -2,7 +2,7 @@ import UIKit
 
 final class TabBarController: UITabBarController {
 
-    var servicesAssembly: ServicesAssembly!
+    var servicesAssembly: ServicesAssembly?
 
     private let catalogTabBarItem = UITabBarItem(
         title: "Каталог",
@@ -27,13 +27,14 @@ final class TabBarController: UITabBarController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        guard let servicesAssembly else { return }
 
         let catalogController = TestCatalogViewController(
             servicesAssembly: servicesAssembly
         )
         catalogController.tabBarItem = catalogTabBarItem
         
-        let cartController = CartViewController()
+        let cartController = CartViewController(servicesAssembly: servicesAssembly)
         let cartNavigationController = UINavigationController(rootViewController: cartController)
         
         cartController.tabBarItem = cartTabBarItem
