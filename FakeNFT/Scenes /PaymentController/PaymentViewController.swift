@@ -19,9 +19,11 @@ final class PaymentViewController: UIViewController, PaymentViewControllerProtoc
     
     private var presenter: PaymentPresenterProtocol?
     private let termsUrl = URL(string: "https://yandex.ru/legal/practicum_termsofuse/")
-    private var cartPresenter: CartPresenter?
     
-    init() {
+    private let servicesAssembly: ServicesAssembly
+    
+    init(servicesAssembly: ServicesAssembly) {
+        self.servicesAssembly = servicesAssembly
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -63,7 +65,7 @@ final class PaymentViewController: UIViewController, PaymentViewControllerProtoc
         textView.translatesAutoresizingMaskIntoConstraints = false
 
         textView.linkTextAttributes = [
-            .foregroundColor: UIColor(named: "Blue") ?? .blue,
+            .foregroundColor: UIColor(named: "Blue"),
             .font: UIFont.caption2
         ]
         
@@ -86,7 +88,7 @@ final class PaymentViewController: UIViewController, PaymentViewControllerProtoc
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        presenter = PaymentPresenter(paymentController: self)
+        presenter = PaymentPresenter(paymentController: self, paymentService: servicesAssembly.paymentService, orderService: servicesAssembly.orderService)
         setupViews()
         currencyList.register(CurrencyCollectionViewCell.self, forCellWithReuseIdentifier: "CurrencyCell")
         currencyList.dataSource = self
@@ -237,4 +239,3 @@ extension PaymentViewController: UITextViewDelegate {
         return false
     }
 }
-

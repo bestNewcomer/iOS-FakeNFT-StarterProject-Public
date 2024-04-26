@@ -10,9 +10,7 @@ import UIKit
 final class CartViewController: UIViewController, CartViewControllerProtocol {
     
     private var presenter: CartPresenterProtocol?
-    
     let servicesAssembly: ServicesAssembly
-    
     init(servicesAssembly: ServicesAssembly) {
         self.servicesAssembly = servicesAssembly
         super.init(nibName: nil, bundle: nil)
@@ -84,14 +82,14 @@ final class CartViewController: UIViewController, CartViewControllerProtocol {
         setupViews()
         setupConstraints()
 
-        presenter = CartPresenter(viewController: self)
+        presenter = CartPresenter(viewController: self, orderService: servicesAssembly.orderService, nftByIdService: servicesAssembly.nftByIdService)
         
         cartTable.register(CartTableViewCell.self, forCellReuseIdentifier: "CartTableViewCell")
         cartTable.delegate = self
         cartTable.dataSource = self
         showPlaceholder()
         
-        print(UserDefaults.standard)
+
         let sorting = UserDefaults.standard.string(forKey: "Sort")
         if sorting == nil {
             print()
@@ -176,7 +174,7 @@ final class CartViewController: UIViewController, CartViewControllerProtocol {
             guard let count = presenter?.count() else { return }
             guard let totalPrice = presenter?.totalPrice() else { return }
             countNftInCartLabel.text = "\(count) NFT"
-            totalPriceLabel.text = "\(round(totalPrice * 100) / 100) ETH"
+            totalPriceLabel.text = "\(totalPrice) ETH"
             placeholderLabel.isHidden = true
             bottomView.isHidden = false
             cartTable.reloadData()
@@ -205,7 +203,6 @@ final class CartViewController: UIViewController, CartViewControllerProtocol {
             self.cartTable.reloadData()
             
             UserDefaults.standard.set("Цена", forKey: "Sort")
-            print(UserDefaults.standard)
             UserDefaults.standard.synchronize()
         } ))
         
@@ -234,7 +231,7 @@ final class CartViewController: UIViewController, CartViewControllerProtocol {
     }
     
     @objc private func didTapPaymentButton() {
-        let paymentController = PaymentViewController()
+        let paymentController = PaymentViewController(servicesAssembly: servicesAssembly)
         paymentController.hidesBottomBarWhenPushed = true
         navigationItem.backButtonTitle = ""
         navigationController?.pushViewController(paymentController, animated: true)
@@ -269,4 +266,3 @@ extension CartViewController: CartTableViewCellDelegate {
         self.tabBarController?.present(deleteViewController, animated: true)
     }
 }
-

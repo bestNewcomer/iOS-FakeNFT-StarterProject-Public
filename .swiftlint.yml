@@ -1,0 +1,12 @@
+included: # paths to include during linting. `--path` is ignored if present.
+  - FakeNFT
+  - FakeNFTTests
+  - FakeNFTUITests
+  
+type_name:
+  min_length: 1 # only warning
+  max_length: # warning and error
+    warning: 30
+    error: 35
+  excluded: iPhone # excluded via string
+reporter: "xcode"

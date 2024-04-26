@@ -18,8 +18,6 @@ final class SuccessPayController: UIViewController {
     private lazy var textLabel: UILabel = {
         let textLabel = UILabel()
         textLabel.font = UIFont.headline3
-        textLabel.numberOfLines = 0
-        textLabel.textAlignment = .center
         textLabel.text = "Успех! Оплата прошла, поздравляем с покупкой!"
         return textLabel
     }()
@@ -36,6 +34,7 @@ final class SuccessPayController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         setupViews()
     }
     
@@ -58,19 +57,12 @@ final class SuccessPayController: UIViewController {
             
             catalogButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             catalogButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            catalogButton.heightAnchor.constraint(equalToConstant: 60),
+             catalogButton.heightAnchor.constraint(equalToConstant: 60),
             catalogButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16)
-
         ])
-        
-        successImage.translatesAutoresizingMaskIntoConstraints = false
-        textLabel.translatesAutoresizingMaskIntoConstraints = false
-        catalogButton.translatesAutoresizingMaskIntoConstraints = false
-
     }
     
     @objc private func didTapCatalogButton() {
         self.dismiss(animated: true)
     }
 }
-
