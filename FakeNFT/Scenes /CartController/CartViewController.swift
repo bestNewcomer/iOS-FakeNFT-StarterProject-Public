@@ -174,7 +174,7 @@ final class CartViewController: UIViewController, CartViewControllerProtocol {
             guard let count = presenter?.count() else { return }
             guard let totalPrice = presenter?.totalPrice() else { return }
             countNftInCartLabel.text = "\(count) NFT"
-            totalPriceLabel.text = "\(totalPrice) ETH"
+            totalPriceLabel.text = "\(round(totalPrice * 100) / 100) ETH"
             placeholderLabel.isHidden = true
             bottomView.isHidden = false
             cartTable.reloadData()
