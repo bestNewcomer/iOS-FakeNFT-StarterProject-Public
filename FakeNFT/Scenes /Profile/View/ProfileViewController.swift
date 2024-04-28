@@ -5,16 +5,29 @@
 //  Created by Ринат Шарафутдинов on 03.04.2024.
 //
 
-import Foundation
 import UIKit
+import Kingfisher
+import SafariServices
+
+protocol ProfileViewControllerProtocol: AnyObject {
+    var presenter: ProfilePresenter? {get set}
+    func updateProfile(profile: Profile?)
+    func updateAvatar(url: URL)
+}
 
 final class ProfileViewController: UIViewController {
     
     //MARK:  - Public Properties
     let servicesAssembly: ServicesAssembly
+    var presenter: ProfilePresenter?
+    weak var delegate: ProfilePresenterDelegate?
     
     //MARK:  - Private Properties
     private let tableСell = ["Мой NFT", "Избранные NFT", "О разработчике"]
+    private var myNFTCount = 0
+    private var favoritesNFTCount = 0
+    private var websiteAdres = ""
+    private let profileService = ProfileService.shared
     
     private lazy var editButton: UIBarButtonItem = {
         let button = UIBarButtonItem( image: UIImage(systemName: "square.and.pencil"),
@@ -27,14 +40,15 @@ final class ProfileViewController: UIViewController {
     
     private lazy var profileImage: UIImageView = {
         let image = UIImageView()
-        image.image = UIImage(named: "avatar")
+        image.layer.cornerRadius = 35
+        image.contentMode = .scaleAspectFill
+        image.clipsToBounds = true
         return image
     }()
     
     private lazy var nameLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.sfProBold22
-        label.text = "Joaquin Phoenix"
         label.textColor = UIColor(named: "ypBlack")
         return label
     }()
@@ -45,7 +59,6 @@ final class ProfileViewController: UIViewController {
         label.numberOfLines = 0
         label.lineBreakMode = .byWordWrapping
         label.textAlignment = .left
-        label.text = "Дизайнер из Казани, люблю цифровое искусство\n и бейглы. В моей коллекции уже 100+ NFT,\n и еще больше — на моём сайте. Открыт\n к коллаборациям."
         label.textColor = UIColor(named: "ypBlack")
         return label
     }()
@@ -53,7 +66,6 @@ final class ProfileViewController: UIViewController {
     private lazy var siteLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.sfProRegular15
-        label.text = "Joaquin Phoenix.com"
         label.textColor = UIColor(named: "ypBlueUn")
         let action = UITapGestureRecognizer(
             target: self,
@@ -111,16 +123,12 @@ final class ProfileViewController: UIViewController {
     
     //MARK: - Action
     @objc func editButtonTap() {
-        let viewController = EditProfileViewController()
-        viewController.modalPresentationStyle = .pageSheet
-        present(viewController, animated: true)
+        presenter?.didTapEditProfile()
     }
     
     @objc func goToWebsiteTap(_ sender: UITapGestureRecognizer) {
-        var urlString = "https://\(siteLabel.text)"
-        if let url = URL(string: urlString) {
-            UIApplication.shared.open(url, options: [:], completionHandler: nil)
-        }
+        presenter?.didTapWebsite(websiteAdres: websiteAdres)
+        
     }
     
     //MARK: - Lifecycle
@@ -130,12 +138,22 @@ final class ProfileViewController: UIViewController {
         customizingNavigation()
         customizingScreenElements()
         customizingTheLayoutOfScreenElements()
+        delegate = self
+        presenter?.delegate = self
     }
-    //MARK: - Private Methods
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        presenter?.viewWillAppear()
+    }
+    
+    //MARK: - Public Methods
     func customizingNavigation() {
         navigationItem.rightBarButtonItem = editButton
     }
     
+    //MARK: - Private Methods
     private func customizingScreenElements() {
         view.backgroundColor = .systemBackground
         
@@ -148,6 +166,8 @@ final class ProfileViewController: UIViewController {
         bigStackView.setCustomSpacing(8, after: descriptionLabel)
         
         NSLayoutConstraint.activate([
+            profileImage.widthAnchor.constraint(equalToConstant: 70),
+            
             bigStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
             bigStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
             bigStackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
@@ -173,11 +193,24 @@ extension ProfileViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: ProfileCell.cellID,for: indexPath) as? ProfileCell else {fatalError("Could not cast to CategoryCell")}
-        
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: ProfileCell.cellID,for: indexPath) as? ProfileCell else {fatalError("Could not cast to ProfileCell")}
         let name = tableСell[indexPath.row]
-        let number = "(112)"
-        cell.changingLabels(nameView: name, numberView: number)
+        switch indexPath.row {
+        case 0:
+            let number = "(\(myNFTCount))"
+            cell.changingLabels(nameView: name, numberView: number)
+            return cell
+        case 1:
+            let number = "(\(favoritesNFTCount))"
+            cell.changingLabels(nameView: name, numberView: number)
+            return cell
+        case 2:
+            cell.changingLabels(nameView: name, numberView: "")
+            return cell
+        default:
+            break
+        }
+        cell.selectionStyle = .none
         return cell
     }
 }
@@ -191,16 +224,98 @@ extension ProfileViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch indexPath.row {
         case 0:
-            let viewController = MyNFTViewController()
-            self.navigationController?.pushViewController(viewController, animated: true)
+            presenter?.didTapMyNFT()
         case 1:
-            let viewController = FavoritesNFTViewController()
-            self.navigationController?.pushViewController(viewController, animated: true)
+            presenter?.didTapFavoriteNFT()
         case 2:
-            print("Кнопка О разработчике функционирует")
+            presenter?.didTapAboutTheDeveloper()
         default:
             break
         }
     }
 }
 
+// MARK: - ProfileViewControllerProtocol
+extension ProfileViewController: ProfileViewControllerProtocol {
+    func updateProfile(profile: Profile?) {
+        if let profile {
+            nameLabel.text = profile.name
+            descriptionLabel.text = profile.description
+            siteLabel.text = profile.website
+            
+            guard let avatarURLString = profile.avatar,
+                  let avatarURL = URL(string: avatarURLString) else {
+                return
+            }
+            updateAvatar(url: avatarURL)
+            myNFTCount = profile.nfts.count
+            favoritesNFTCount = profile.likes.count
+            websiteAdres = profile.website
+            profileTableView.reloadData()
+        } else {
+            nameLabel.text = ""
+            descriptionLabel.text = ""
+            siteLabel.text = ""
+            profileImage.image = UIImage()
+        }
+    }
+    
+    func updateAvatar(url: URL) {
+        profileImage.kf.setImage(with: url, options: [.forceRefresh])
+    }
+}
+
+// MARK: - EditProfilePresenterDelegate
+extension ProfileViewController: EditProfilePresenterDelegate {
+    func profileDidUpdate(profile: Profile, newAvatarURL: String?) {
+        DispatchQueue.main.async { [weak self] in
+            self?.updateProfile(profile: profile)
+            self?.presenter?.updateUserProfile(profile: profile)
+        }
+    }
+}
+
+// MARK: - ProfilePresenterDelegate
+extension ProfileViewController: ProfilePresenterDelegate {
+    func goToAboutTheDeveloper() {
+        let aboutDeveloperViewController = SFSafariViewController(url: URL(string: NetworkConstants.urlAboutTheDeveloper)!)
+        aboutDeveloperViewController.hidesBottomBarWhenPushed = true
+        self.navigationController?.present(aboutDeveloperViewController, animated: true)
+    }
+    
+    func didTapWebsite(websiteAdres: String) {
+        guard let websiteURL = URL(string: websiteAdres) else {return}
+        let websiteViewController = SFSafariViewController(url: websiteURL)
+        websiteViewController.hidesBottomBarWhenPushed = true
+        self.navigationController?.present(websiteViewController, animated: true)
+        
+    }
+    
+    func goToMyNFT(with nftID: [String], and likedNFT: [String]) {
+        let myNFTViewController = MyNFTViewController(nftID: nftID, likedID: likedNFT)
+        myNFTViewController.hidesBottomBarWhenPushed = true
+        self.navigationController?.pushViewController(myNFTViewController, animated: true)
+    }
+    
+    func goToFavoriteNFT(with nftID: [String], and likedNFT: [String]) {
+        let favoritesNFTViewController = FavoritesNFTViewController(nftID: nftID, likedID: likedNFT)
+        favoritesNFTViewController.hidesBottomBarWhenPushed = true
+        self.navigationController?.pushViewController(favoritesNFTViewController, animated: true)
+    }
+    
+    func goToEditProfile(profile: Profile) {
+        let editProfileViewController = EditProfileViewController(presenter: nil)
+        let editProfileService = EditProfileService.shared
+        editProfileViewController.editProfilePresenterDelegate = self
+        editProfileService.setView(editProfileViewController)
+        let editProfilePresenter = EditProfilePresenter(
+            view: editProfileViewController,
+            profile: profile,
+            editProfileService: editProfileService
+        )
+        editProfilePresenter.delegate = self
+        editProfileViewController.presenter = editProfilePresenter
+        editProfileViewController.modalPresentationStyle = .pageSheet
+        present(editProfileViewController, animated: true)
+    }
+}
