@@ -49,47 +49,6 @@ final class CartPresenter: CartPresenterProtocol {
         self.viewController = viewController
         self.orderService = orderService
         self.nftByIdService = nftByIdService
-        
-        let decoder = JSONDecoder()
-        
-        let jsonMock1 = """
-        {
-            "createdAt": "13-04-2024",
-            "name": "mock1",
-            "images": ["mock1"],
-            "rating": 5,
-            "description": "",
-            "price": 1.78,
-            "author": "",
-            "id": "1"
-        }
-        """.data(using: .utf8)!
-        
-        let jsonMock2 = """
-        {
-            "createdAt": "13-04-2024",
-            "name": "mock2",
-            "images": ["mock2"],
-            "rating": 2,
-            "description": "",
-            "price": 1.65,
-            "author": "",
-            "id": "2"
-        }
-        """.data(using: .utf8)!
-
-        
-        var mock1: NftDataModel
-        var mock2: NftDataModel
-        do {
-            mock1 = try decoder.decode(NftDataModel.self, from: jsonMock1)
-            mock2 = try decoder.decode(NftDataModel.self, from: jsonMock2)
-            cartContent = [mock1, mock2]
-        }
-        catch {
-            print("oy", error)
-        }
-        
     }
         
     func totalPrice() -> Float {
