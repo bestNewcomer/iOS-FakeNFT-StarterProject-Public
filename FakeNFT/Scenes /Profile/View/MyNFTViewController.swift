@@ -119,7 +119,7 @@ final class MyNFTViewController: UIViewController {
         presenter?.view = self
         presenter?.viewDidLoad()
     }
-        
+    
     //MARK: - Private Methods
     private func customizingStub () {
         view.addSubview(stubLabel)
