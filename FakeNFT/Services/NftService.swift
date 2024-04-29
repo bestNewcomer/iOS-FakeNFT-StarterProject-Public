@@ -29,7 +29,6 @@ final class NftService: NftServiceProtocol {
                 storage?.saveNft(nft)
                 completion(.success(nft))
             case .failure(let error):
-                print(result, "result")
                 completion(.failure(error))
             }
         }

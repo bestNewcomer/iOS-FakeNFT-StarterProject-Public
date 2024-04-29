@@ -49,6 +49,7 @@ final class PaymentService: PaymentServiceProtocol {
                 case let .failure(error):
                     completion(.failure(error))
                 }
+                print(result)
             }
         }
     }

@@ -87,6 +87,8 @@ final class CartViewController: UIViewController, CartViewControllerProtocol {
         cartTable.register(CartTableViewCell.self, forCellReuseIdentifier: "CartTableViewCell")
         cartTable.delegate = self
         cartTable.dataSource = self
+        presenter?.getOrder()
+        presenter?.setOrder()
         showPlaceholder()
         
 

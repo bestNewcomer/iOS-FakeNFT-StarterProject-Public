@@ -78,6 +78,7 @@ final class OrderService: OrderServiceProtocol {
                     completion(.failure(error))
                 }
             }
+            print(result)
         }
         return
     }
