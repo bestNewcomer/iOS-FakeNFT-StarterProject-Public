@@ -171,41 +171,41 @@ final class EditProfileViewController: UIViewController {
             message: "Вставьте ссылку на изображение",
             preferredStyle: .alert
         )
-
+        
         alert.addTextField { textField in
             textField.placeholder = "Вставьте ссылку: "
         }
-
+        
         alert.addAction(
             UIAlertAction(
                 title: "ОK",
                 style: .default) { [weak self] _ in
                     guard
-                    let self = self,
-                    let textField = alert.textFields?[0],
-                    let URL = textField.text
-                else { return }
-
-                if validateURLFormat(urlString: URL) {
-                    self.loadAvatarLabel.text = URL
-                    self.newAvatarURL = URL
-                } else {
-                    let wrongURL = UIAlertController(
-                        title: "Ccылка недействительна",
-                        message: "Проверьте верность ссылки",
-                        preferredStyle: .alert)
-                    wrongURL.addAction(
-                        UIAlertAction(
-                            title: "ОK",
-                            style: .cancel
-                        ) { _ in
-                            wrongURL.dismiss(animated: true)
-                        }
-                    )
-                    self.present(wrongURL, animated: true)
+                        let self = self,
+                        let textField = alert.textFields?[0],
+                        let URL = textField.text
+                    else { return }
+                    
+                    if validateURLFormat(urlString: URL) {
+                        self.loadAvatarLabel.text = URL
+                        self.newAvatarURL = URL
+                    } else {
+                        let wrongURL = UIAlertController(
+                            title: "Ccылка недействительна",
+                            message: "Проверьте верность ссылки",
+                            preferredStyle: .alert)
+                        wrongURL.addAction(
+                            UIAlertAction(
+                                title: "ОK",
+                                style: .cancel
+                            ) { _ in
+                                wrongURL.dismiss(animated: true)
+                            }
+                        )
+                        self.present(wrongURL, animated: true)
+                    }
+                    alert.dismiss(animated: true)
                 }
-                alert.dismiss(animated: true)
-            }
         )
         self.present(alert, animated: true)
     }

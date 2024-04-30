@@ -111,7 +111,7 @@ final class FavoritesNFTCell: UICollectionViewCell {
         likeButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
         likeButton.tintColor = isLiked ? UIColor(named: "ypRedUn"): UIColor(named: "ypWhite")
     }
-
+    
     // MARK: - Private Methods
     private func customizingScreenElements() {
         [nftImage, likeButton, mainStackView].forEach {contentView.addSubview($0)}
