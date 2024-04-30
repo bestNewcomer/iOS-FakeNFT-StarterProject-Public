@@ -9,10 +9,14 @@ import UIKit
 
 final class AppConfiguration {
   let catalogViewController: UIViewController
+  let profileViewController: UIViewController
+  var servicesAssembly: ServicesAssembly!
   private let catalogNavigationController: UINavigationController
   private let cartService: CartControllerProtocol
   
   init() {
+    profileViewController = ProfileViewController(servicesAssembly: servicesAssembly)
+    
     let dataProvider = CatalogDataProvider(networkClient: DefaultNetworkClient())
     let router = CatalogRouter()
     

@@ -3,6 +3,7 @@ import UIKit
 final class TabBarController: UITabBarController {
   
   let appConfiguration: AppConfiguration
+  var servicesAssembly: ServicesAssembly!
   
   init(appConfiguration: AppConfiguration) {
     self.appConfiguration = appConfiguration
@@ -16,17 +17,33 @@ final class TabBarController: UITabBarController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
+    let profileViewController = ProfileViewController(servicesAssembly: servicesAssembly)
+    
+
+    let profilePresenter = ProfilePresenter()
+    profileViewController.presenter = profilePresenter
+    profilePresenter.view = profileViewController
     
     //to present a future hierarchy of view controllers in tab bar interface
     let catalogNC = UINavigationController(
       rootViewController: appConfiguration.catalogViewController)
+    
     catalogNC.tabBarItem = UITabBarItem(
       title: NSLocalizedString("Tab.catalog", comment: ""),
       image: UIImage(named:"catalogBar"),
-      tag: 0
+      tag: 1
     )
     
-    viewControllers = [catalogNC]
+    let profileTabBarItem = UITabBarItem(
+        title: "Профиль",
+        image: UIImage(named: "profileBar"),
+        tag: 0
+    )
+    
+    let profileNavigationController = UINavigationController(rootViewController: profileViewController)
+    profileViewController.tabBarItem = profileTabBarItem
+    
+    viewControllers = [profileNavigationController, catalogNC]
     
     tabBar.isTranslucent = false
     view.tintColor = .ypBlueUn
@@ -48,28 +65,24 @@ final class TabBarController: UITabBarController {
     
     
     
-    var servicesAssembly: ServicesAssembly!
+   
     
-    private let profileTabBarItem = UITabBarItem(
-        title: "Профиль",
-        image: UIImage(named: "profileBar"),
-        tag: 0
-    )
+    
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        let profileViewController = ProfileViewController(servicesAssembly: servicesAssembly)
-        let profileNavigationController = UINavigationController(rootViewController: profileViewController)
-        profileViewController.tabBarItem = profileTabBarItem
-
-        let profilePresenter = ProfilePresenter()
-        profileViewController.presenter = profilePresenter
-        profilePresenter.view = profileViewController
-        
-        viewControllers = [profileNavigationController]
-
-        view.backgroundColor = .systemBackground
+//    override func viewDidLoad() {
+//        super.viewDidLoad()
+//
+//        let profileViewController = ProfileViewController(servicesAssembly: servicesAssembly)
+//        let profileNavigationController = UINavigationController(rootViewController: profileViewController)
+//        profileViewController.tabBarItem = profileTabBarItem
+//
+//        let profilePresenter = ProfilePresenter()
+//        profileViewController.presenter = profilePresenter
+//        profilePresenter.view = profileViewController
+//        
+//        viewControllers = [profileNavigationController]
+//
+//        view.backgroundColor = .systemBackground
     }
   }
 }
