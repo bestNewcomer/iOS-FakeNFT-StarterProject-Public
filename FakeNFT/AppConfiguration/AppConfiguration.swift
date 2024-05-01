@@ -9,13 +9,17 @@ import UIKit
 
 final class AppConfiguration {
   let catalogViewController: UIViewController
-  let profileViewController: UIViewController
+  let profileViewController: ProfileViewController
   var servicesAssembly: ServicesAssembly!
   private let catalogNavigationController: UINavigationController
   private let cartService: CartControllerProtocol
   
   init() {
+    let servicesAssembly = ServicesAssembly(networkClient: DefaultNetworkClient(), nftStorage: NftStorageImpl())
+    let profilePresenter = ProfilePresenter()
     profileViewController = ProfileViewController(servicesAssembly: servicesAssembly)
+    profileViewController.presenter = profilePresenter
+    profilePresenter.view = profileViewController
     
     let dataProvider = CatalogDataProvider(networkClient: DefaultNetworkClient())
     let router = CatalogRouter()

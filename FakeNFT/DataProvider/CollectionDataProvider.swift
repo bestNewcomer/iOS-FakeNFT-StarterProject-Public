@@ -42,7 +42,7 @@ final class CollectionDataProvider: CollectionDataProviderProtocol {
   }
   
   func fetchCollectionDataById(id: String, completion: @escaping (NFTCollection) -> Void) {
-    ProgressHUD.show()
+  ProgressHUD.show()
     networkClient.send(request: CollectionDataRequest(id: id), type: NFTCollection.self) { [weak self] result in
       guard let self = self else { return }
       switch result {
