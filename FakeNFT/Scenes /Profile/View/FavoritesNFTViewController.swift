@@ -99,6 +99,7 @@ final class FavoritesNFTViewController: UIViewController {
     }
     
     private func customizingScreenElements() {
+        view.backgroundColor = .systemBackground
         view.addSubview(favoritesNFTCollectionView)
     }
     

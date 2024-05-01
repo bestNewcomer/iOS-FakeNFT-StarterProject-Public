@@ -141,6 +141,7 @@ final class MyNFTViewController: UIViewController {
     }
     
     private func customizingScreenElements() {
+        view.backgroundColor = .systemBackground
         view.addSubview(myNFTTableView)
     }
     
