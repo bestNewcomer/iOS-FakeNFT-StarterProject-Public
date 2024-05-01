@@ -202,5 +202,10 @@
 - экран «Мои NFT» — по рейтингу;
 - экран «Статистика» — по рейтингу.
 
-**Демонстрация экрана Профиля:**
-https://github.com/4Leonid/iOS-FakeNFT-StarterProject-Public/assets/134210806/ddef460a-f7af-4bd0-ad4c-971e5a760a63
+# Демонстрация
+**Экрана Профиля:**
+  
+
+https://github.com/4Leonid/iOS-FakeNFT-StarterProject-Public/assets/134210806/c27ca7f1-2101-4799-bf0b-e4bd8f5f4f27
+
+
