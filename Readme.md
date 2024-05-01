@@ -204,8 +204,9 @@
 
 # Демонстрация
 **Экрана Профиля:**
-  
 
-https://github.com/4Leonid/iOS-FakeNFT-StarterProject-Public/assets/134210806/c27ca7f1-2101-4799-bf0b-e4bd8f5f4f27
+
+https://github.com/4Leonid/iOS-FakeNFT-StarterProject-Public/assets/134210806/f7e8c322-e593-4750-b10d-557fb1c3088e
+
 
 
