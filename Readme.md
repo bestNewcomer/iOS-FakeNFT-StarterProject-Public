@@ -209,5 +209,8 @@
 
 **Экрана Каталога:**
 
+![Simulator Screen Recording - iPhone 15 - 2024-05-01 at 13 32 14](https://github.com/4Leonid/iOS-FakeNFT-StarterProject-Public/assets/134210806/46d5401e-b44b-4232-981c-63ef11bce23a)
+
+
 
 
