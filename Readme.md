@@ -201,3 +201,6 @@
 - экран «Корзина» — по названию;
 - экран «Мои NFT» — по рейтингу;
 - экран «Статистика» — по рейтингу.
+
+**Демонстрация экрана Профиля:**
+https://github.com/4Leonid/iOS-FakeNFT-StarterProject-Public/assets/134210806/ddef460a-f7af-4bd0-ad4c-971e5a760a63
