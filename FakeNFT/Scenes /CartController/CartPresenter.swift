@@ -9,6 +9,8 @@ import UIKit
 import Kingfisher
 
 protocol CartPresenterProtocol {
+    var cartContent: [NftDataModel] { get set}
+    
     func totalPrice() -> Float
     func count() -> Int
     func getOrder()
@@ -45,6 +47,7 @@ final class CartPresenter: CartPresenterProtocol {
         self.viewController = viewController
         self.orderService = orderService
         self.nftByIdService = nftByIdService
+        self.orderService?.cartPresenter = self
         
     }
         
@@ -70,6 +73,7 @@ final class CartPresenter: CartPresenterProtocol {
                 switch result {
                 case .success(let order):
                     self.order = order
+                    print(order.nfts)
                     if !order.nfts.isEmpty {
                         order.nfts.forEach {
                             self.orderIds.append($0)
@@ -113,6 +117,7 @@ final class CartPresenter: CartPresenterProtocol {
     func setOrder() {
         guard let order = self.orderService?.nftsStorage else { return }
         self.cartContent = order
+        
         viewController?.updateCartTable()
     }
     

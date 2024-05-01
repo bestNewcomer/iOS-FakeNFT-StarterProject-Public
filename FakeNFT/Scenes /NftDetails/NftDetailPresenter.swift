@@ -71,7 +71,6 @@ final class NftDetailPresenter: NftDetailPresenterProtocol {
         let message: String
         switch error {
         case is NetworkClientError:
-            print(NetworkClientError.self)
             message = "Произошла ошибка сети"
         default:
             message = "Произошла неизвестная ошибка"

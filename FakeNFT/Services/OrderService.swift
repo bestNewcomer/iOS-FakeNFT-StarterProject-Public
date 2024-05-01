@@ -13,6 +13,8 @@ typealias RemoveAllNftCompletion = (Result<Int, Error>) -> Void
 
 protocol OrderServiceProtocol {
     var nftsStorage: [NftDataModel] { get }
+    var cartPresenter: CartPresenterProtocol? { get set}
+    
     func loadOrder(completion: @escaping OrderCompletion)
     func removeNftFromStorage(id: String, completion: @escaping RemoveOrderCompletion)
     func removeAllNftFromStorage(completion: @escaping RemoveAllNftCompletion)
@@ -26,6 +28,8 @@ final class OrderService: OrderServiceProtocol {
     private let nftStorage: NftByIdStorageProtocol
     private var idsStorage: [String] = []
     var nftsStorage: [NftDataModel] = []
+    
+    var cartPresenter: CartPresenterProtocol?
     
     init(networkClient: NetworkClient, orderStorage: OrderStorageProtocol, nftByIdService: NftByIdServiceProtocol, nftStorage: NftByIdStorageProtocol) {
         self.networkClient = networkClient
@@ -73,12 +77,13 @@ final class OrderService: OrderServiceProtocol {
                 case let .success(data):
                     self.idsStorage.removeAll(where: { $0 == id } )
                     self.nftsStorage.removeAll(where: { $0.id == id } )
+                    self.cartPresenter?.cartContent.removeAll(where: { $0.id == id } )
                     completion(.success(data.nfts))
                 case let .failure(error):
                     completion(.failure(error))
                 }
             }
-            print(result)
+            
         }
         return
     }
@@ -93,6 +98,7 @@ final class OrderService: OrderServiceProtocol {
                 case let .success(data):
                     self.idsStorage.removeAll()
                     self.nftsStorage.removeAll()
+                    self.cartPresenter?.cartContent.removeAll()
                     completion(.success(data.nfts.count))
                 case let .failure(error):
                     completion(.failure(error))

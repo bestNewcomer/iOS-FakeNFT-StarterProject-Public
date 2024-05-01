@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class CartViewController: UIViewController, CartViewControllerProtocol {
+final class CartViewController: UIViewController, CartViewControllerProtocol, UITabBarControllerDelegate {
     
     private var presenter: CartPresenterProtocol?
     let servicesAssembly: ServicesAssembly
@@ -76,6 +76,16 @@ final class CartViewController: UIViewController, CartViewControllerProtocol {
     
     private var loaderView = LoaderView()
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        if presenter != nil {
+            presenter?.getOrder()
+            presenter?.setOrder()
+        }
+    }
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -87,8 +97,8 @@ final class CartViewController: UIViewController, CartViewControllerProtocol {
         cartTable.register(CartTableViewCell.self, forCellReuseIdentifier: "CartTableViewCell")
         cartTable.delegate = self
         cartTable.dataSource = self
-        presenter?.getOrder()
-        presenter?.setOrder()
+        //presenter?.getOrder()
+        //presenter?.setOrder()
         showPlaceholder()
         
 
