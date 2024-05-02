@@ -78,15 +78,15 @@ final class CartViewController: UIViewController, CartViewControllerProtocol, UI
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        print("viewWillAppear")
         
-        if presenter != nil {
-            presenter?.getOrder()
-            presenter?.setOrder()
-        }
+        presenter?.getOrder()
+        presenter?.setOrder()
     }
     
     
     override func viewDidLoad() {
+        print("viewDidLoad()")
         super.viewDidLoad()
         
         setupViews()
@@ -97,8 +97,8 @@ final class CartViewController: UIViewController, CartViewControllerProtocol, UI
         cartTable.register(CartTableViewCell.self, forCellReuseIdentifier: "CartTableViewCell")
         cartTable.delegate = self
         cartTable.dataSource = self
-        //presenter?.getOrder()
-        //presenter?.setOrder()
+        presenter?.getOrder()
+        presenter?.setOrder()
         showPlaceholder()
         
 

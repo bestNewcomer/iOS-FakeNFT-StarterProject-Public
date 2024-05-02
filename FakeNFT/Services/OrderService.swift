@@ -25,7 +25,7 @@ final class OrderService: OrderServiceProtocol {
     private let networkClient: NetworkClient
     private let orderStorage: OrderStorageProtocol
     private let nftByIdService: NftByIdServiceProtocol
-    private let nftStorage: NftByIdStorageProtocol
+    private var nftStorage: NftByIdStorageProtocol
     private var idsStorage: [String] = []
     var nftsStorage: [NftDataModel] = []
     
@@ -66,18 +66,19 @@ final class OrderService: OrderServiceProtocol {
     }
     
     func removeNftFromStorage(id: String, completion: @escaping RemoveOrderCompletion) {
-        var newIdsStorage = idsStorage
-        newIdsStorage.removeAll(where: { $0 == id } )
+        self.idsStorage.removeAll(where: { $0 == id } )
         
-        let request = ChangeOrderRequest(nfts: newIdsStorage)
+        let request = ChangeOrderRequest(nfts: self.idsStorage)
         networkClient.send(request: request, type: ChangedOrderDataModel.self) { result in
             DispatchQueue.main.async { [weak self] in
                 guard let self = self else { return }
                 switch result {
                 case let .success(data):
+                    print("rem")
                     self.idsStorage.removeAll(where: { $0 == id } )
                     self.nftsStorage.removeAll(where: { $0.id == id } )
                     self.cartPresenter?.cartContent.removeAll(where: { $0.id == id } )
+                    self.nftStorage.removeNftById(with: id)
                     completion(.success(data.nfts))
                 case let .failure(error):
                     completion(.failure(error))
@@ -99,6 +100,8 @@ final class OrderService: OrderServiceProtocol {
                     self.idsStorage.removeAll()
                     self.nftsStorage.removeAll()
                     self.cartPresenter?.cartContent.removeAll()
+                    self.nftStorage.removeAllNft()
+                    self.orderStorage.removeOrder()
                     completion(.success(data.nfts.count))
                 case let .failure(error):
                     completion(.failure(error))

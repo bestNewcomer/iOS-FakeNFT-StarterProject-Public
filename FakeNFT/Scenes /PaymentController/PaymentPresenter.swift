@@ -68,9 +68,7 @@ final class PaymentPresenter: PaymentPresenterProtocol {
             guard let self = self else { return }
             switch result {
             case let .success(data):
-                if (data.success) {
-                    self.emptyCart()
-                }
+                self.emptyCart()
                 self.paymentController?.didPayment(paymentResult: data.success)
                 self.paymentController?.stopLoadIndicator()
             case .failure(_):

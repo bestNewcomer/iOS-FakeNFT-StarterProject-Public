@@ -10,6 +10,7 @@ import Foundation
 protocol OrderStorageProtocol: AnyObject {
     func saveOrder(_ order: OrderDataModel)
     func getOrder(with id: String) -> OrderDataModel?
+    func removeOrder()
 }
 
 final class OrderStorage: OrderStorageProtocol {
@@ -27,6 +28,12 @@ final class OrderStorage: OrderStorageProtocol {
     func getOrder(with id: String) -> OrderDataModel? {
         syncQueue.sync {
             storage[id]
+        }
+    }
+    
+    func removeOrder() {
+        syncQueue.sync {
+            storage = [:]
         }
     }
 }
