@@ -8,5 +8,6 @@
 import Foundation
 
 struct ChangedOrderDataModel: Codable {
-    var nfts: [String]
+    var nfts: String
 }
+

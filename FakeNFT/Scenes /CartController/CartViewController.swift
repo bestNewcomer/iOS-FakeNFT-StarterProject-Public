@@ -78,7 +78,6 @@ final class CartViewController: UIViewController, CartViewControllerProtocol, UI
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        print("viewWillAppear")
         
         presenter?.getOrder()
         presenter?.setOrder()
@@ -86,7 +85,6 @@ final class CartViewController: UIViewController, CartViewControllerProtocol, UI
     
     
     override func viewDidLoad() {
-        print("viewDidLoad()")
         super.viewDidLoad()
         
         setupViews()

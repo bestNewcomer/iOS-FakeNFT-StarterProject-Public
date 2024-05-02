@@ -73,7 +73,7 @@ final class CartPresenter: CartPresenterProtocol {
                 switch result {
                 case .success(let order):
                     self.order = order
-                    print(order.nfts)
+
                     if !order.nfts.isEmpty {
                         order.nfts.forEach {
                             self.orderIds.append($0)

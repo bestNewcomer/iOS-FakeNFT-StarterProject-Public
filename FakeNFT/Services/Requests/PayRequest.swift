@@ -14,4 +14,6 @@ struct PayRequest: NetworkRequest {
     var endpoint: URL? {
         URL(string: "https://\(RequestConstants.baseURL)/api/v1/orders/1/payment/\(currencyId)")
     }
+    
+    var nfts: [String]?
 }

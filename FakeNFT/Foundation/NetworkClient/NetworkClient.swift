@@ -60,6 +60,7 @@ struct DefaultNetworkClient: NetworkClient {
                 onResponse(result)
             }
         }
+        
         guard let urlRequest = create(request: request) else { return nil }
         
 
@@ -115,12 +116,10 @@ struct DefaultNetworkClient: NetworkClient {
             assertionFailure("Empty endpoint")
             return nil
         }
-
+        
         var urlRequest = URLRequest(url: endpoint)
         urlRequest.httpMethod = request.httpMethod.rawValue
         urlRequest.setValue("107f0274-8faf-4343-b31f-c12b62673e2f", forHTTPHeaderField: "X-Practicum-Mobile-Token")
-        
-        print("request.httpMethod.rawValue", request.httpMethod.rawValue)
         
         if request.httpMethod.rawValue == "GET" {
             urlRequest.setValue("application/json", forHTTPHeaderField: "Accept")
@@ -132,11 +131,20 @@ struct DefaultNetworkClient: NetworkClient {
             urlRequest.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
         }
         
+        
+        
+        if request.nfts !=  nil {
+            
+            let nftsString = "nfts=(\(request.nfts!))"
+            
+            urlRequest.httpBody = nftsString.data(using: .utf8)
+            
+        }
+        
+        
 
         if let dto = request.dto,
            let dtoEncoded = try? encoder.encode(dto) {
-            
-            urlRequest.httpBody = dtoEncoded
         }
 
         return urlRequest

@@ -10,13 +10,13 @@ import Foundation
 struct ChangeOrderRequest: NetworkRequest {
     
     var httpMethod: HttpMethod { .put }
-    var nfts: Encodable?
+    var nfts: [String]?
     
     var endpoint: URL? {
         URL(string: "https://\(RequestConstants.baseURL)/api/v1/orders/1")
     }
     
     init(nfts: [String]) {
-        self.nfts = ChangedOrderDataModel(nfts: nfts)
+        self.nfts = nfts
     }
 }

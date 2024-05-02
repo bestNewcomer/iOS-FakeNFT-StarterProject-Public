@@ -14,5 +14,7 @@ struct OrderRequest: NetworkRequest {
     var endpoint: URL? {
         URL(string: "https://\(RequestConstants.baseURL)/api/v1/orders/1")
     }
+    
+    var nfts: [String]?
 }
 
