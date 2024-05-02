@@ -123,6 +123,7 @@ struct DefaultNetworkClient: NetworkClient {
         print("request.httpMethod.rawValue", request.httpMethod.rawValue)
         
         if request.httpMethod.rawValue == "GET" {
+            urlRequest.setValue("application/json", forHTTPHeaderField: "Accept")
             urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
         }
         if request.httpMethod.rawValue == "PUT" {
