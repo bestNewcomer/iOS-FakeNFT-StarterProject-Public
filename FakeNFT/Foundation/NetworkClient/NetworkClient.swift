@@ -119,11 +119,22 @@ struct DefaultNetworkClient: NetworkClient {
         var urlRequest = URLRequest(url: endpoint)
         urlRequest.httpMethod = request.httpMethod.rawValue
         urlRequest.setValue("107f0274-8faf-4343-b31f-c12b62673e2f", forHTTPHeaderField: "X-Practicum-Mobile-Token")
-        urlRequest.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+        
+        print("request.httpMethod.rawValue", request.httpMethod.rawValue)
+        
+        if request.httpMethod.rawValue == "GET" {
+            urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        }
+        if request.httpMethod.rawValue == "PUT" {
+            urlRequest.setValue("application/json", forHTTPHeaderField: "Accept")
+
+            urlRequest.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+        }
+        
 
         if let dto = request.dto,
            let dtoEncoded = try? encoder.encode(dto) {
-            urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            
             urlRequest.httpBody = dtoEncoded
         }
 
