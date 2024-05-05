@@ -19,11 +19,13 @@ final class PaymentViewController: UIViewController, PaymentViewControllerProtoc
     
     private var presenter: PaymentPresenterProtocol?
     private let termsUrl = URL(string: "https://yandex.ru/legal/practicum_termsofuse/")
+    var cartController: CartViewController
     
     private let servicesAssembly: ServicesAssembly
     
-    init(servicesAssembly: ServicesAssembly) {
+    init(servicesAssembly: ServicesAssembly, cartController: CartViewController) {
         self.servicesAssembly = servicesAssembly
+        self.cartController = cartController
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -153,6 +155,9 @@ final class PaymentViewController: UIViewController, PaymentViewControllerProtoc
         if paymentResult {
             let successPayController = SuccessPayController()
             successPayController.modalPresentationStyle = .fullScreen
+            self.cartController.presenter?.cartContent = []
+            self.cartController.updateCartTable()
+            self.cartController.showPlaceholder()
             present(successPayController, animated: true) {
                     self.navigationController?.popViewController(animated: true)
                     self.tabBarController?.selectedViewController = self.tabBarController?.viewControllers?[0]

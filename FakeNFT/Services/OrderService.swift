@@ -8,12 +8,12 @@
 import Foundation
 
 typealias OrderCompletion = (Result<OrderDataModel, Error>) -> Void
-typealias RemoveOrderCompletion = (Result<String, Error>) -> Void
+typealias RemoveOrderCompletion = (Result<[String], Error>) -> Void
 typealias RemoveAllNftCompletion = (Result<Int, Error>) -> Void
 
 protocol OrderServiceProtocol {
-    var nftsStorage: [NftDataModel] { get }
     var cartPresenter: CartPresenterProtocol? { get set}
+    var nftsStorage: [NftDataModel] { get }
     
     func loadOrder(completion: @escaping OrderCompletion)
     func removeNftFromStorage(id: String, completion: @escaping RemoveOrderCompletion)
@@ -51,7 +51,13 @@ final class OrderService: OrderServiceProtocol {
                         switch result {
                         case let .success(nft):
                             self.nftStorage.saveNftById(nft)
-                            self.nftsStorage.append(nft)
+                            let contains = self.nftsStorage.contains {
+                                model in
+                                return model.id == nft.id
+                            }
+                            if !contains {
+                                self.nftsStorage.append(nft)
+                            }
                         case let .failure(error):
                             print(error)
                             completion(.failure(error))
@@ -77,6 +83,9 @@ final class OrderService: OrderServiceProtocol {
                     self.idsStorage.removeAll(where: { $0 == id } )
                     self.nftsStorage.removeAll(where: { $0.id == id } )
                     self.cartPresenter?.cartContent.removeAll(where: { $0.id == id } )
+                    self.nftStorage.removeNftById(with: id)
+                    
+                    self.orderStorage.removeOrderById(with: id)
                     completion(.success(data.nfts))
                 case let .failure(error):
                     completion(.failure(error))
@@ -97,7 +106,9 @@ final class OrderService: OrderServiceProtocol {
                 case let .success(data):
                     self.idsStorage.removeAll()
                     self.nftsStorage.removeAll()
-                    self.cartPresenter?.cartContent.removeAll()
+                    self.cartPresenter?.cartContent = []
+                    self.cartPresenter?.viewController?.updateCartTable()
+                    self.cartPresenter?.viewController?.showPlaceholder()
                     self.nftStorage.removeAllNft()
                     self.orderStorage.removeOrder()
                     completion(.success(data.nfts.count))

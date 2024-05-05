@@ -13,8 +13,30 @@ struct ChangeOrderRequest: NetworkRequest {
     var nfts: [String]?
     
     var endpoint: URL? {
-        URL(string: "https://\(RequestConstants.baseURL)/api/v1/orders/1")
+        var urlComponents = URLComponents(string: "\(RequestConstants.baseURL)/api/v1/orders/1")
+        var components: [URLQueryItem] = []
+        
+        if let nfts = self.nfts {
+          for nft in nfts {
+            components.append(URLQueryItem(name: "nfts", value: nft))
+          }
+        } else {
+            components.append(URLQueryItem(name: "nfts", value: ""))
+        }
+        
+        
+        
+        urlComponents?.queryItems = components
+        return urlComponents?.url
     }
+    
+    var isUrlEncoded: Bool {
+      return true
+    }
+    
+    var dto: Encodable?
+    
+    let token = "107f0274-8faf-4343-b31f-c12b62673e2f"
     
     init(nfts: [String]) {
         self.nfts = nfts

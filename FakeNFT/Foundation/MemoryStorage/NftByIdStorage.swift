@@ -20,29 +20,19 @@ final class NftByIdStorage: NftByIdStorageProtocol{
 
     internal var storage: [String: NftDataModel] = [:]
 
-    private let syncQueue = DispatchQueue(label: "sync-order-queue")
-
     func saveNftById(_ nftById: NftDataModel) {
-        syncQueue.async { [weak self] in
-            self?.storage[nftById.id] = nftById
-        }
+        storage[nftById.id] = nftById
     }
 
     func getNftById(with id: String) -> NftDataModel? {
-        syncQueue.sync {
-            storage[id]
-        }
+        storage[id]
     }
     
     func removeNftById(with id: String) {
-        syncQueue.sync {
-            storage[id] = nil
-        }
+        storage[id] = nil
     }
     
     func removeAllNft() {
-        syncQueue.sync {
-            storage = [:]
-        }
+        storage = [:]
     }
 }

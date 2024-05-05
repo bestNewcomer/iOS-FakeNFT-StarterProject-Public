@@ -10,6 +10,7 @@ import Kingfisher
 
 protocol CartPresenterProtocol {
     var cartContent: [NftDataModel] { get set}
+    var viewController: CartViewControllerProtocol? { get set}
     
     func totalPrice() -> Float
     func count() -> Int
@@ -22,7 +23,7 @@ protocol CartPresenterProtocol {
 
 final class CartPresenter: CartPresenterProtocol {
     
-    private weak var viewController: CartViewControllerProtocol?
+    weak var viewController: CartViewControllerProtocol?
     private var orderService: OrderServiceProtocol?
     private var nftByIdService: NftByIdServiceProtocol?
     private var userDefaults = UserDefaults.standard
@@ -73,18 +74,19 @@ final class CartPresenter: CartPresenterProtocol {
                 switch result {
                 case .success(let order):
                     self.order = order
-
+                    self.cartContent = []
                     if !order.nfts.isEmpty {
                         order.nfts.forEach {
-                            self.orderIds.append($0)
+                            self.getNftById(id: $0)
                         }
-                        for nftsIds in self.orderIds {
-                            self.getNftById(id: nftsIds)
-                        }
+                        
                         self.viewController?.updateCartTable()
                     }
+
                     self.sortCart(filter: self.currentFilter)
                     self.viewController?.stopLoadIndicator()
+                    self.viewController?.updateCartTable()
+                    self.viewController?.showPlaceholder()
                 case .failure(let error):
                     print(error)
                     self.viewController?.stopLoadIndicator()
@@ -102,10 +104,25 @@ final class CartPresenter: CartPresenterProtocol {
                 switch result {
                 case .success(let nft):
                     self.nftById = nft
-                    self.cartContent.append(self.nftById!)
+                    
+                    let contains = self.cartContent.contains {
+                        model in
+                        return model.id == nft.id
+                    }
+                    
+                    if !contains {
+                        self.cartContent.append(self.nftById!)
+                    }
+                    
                     self.viewController?.showPlaceholder()
                     self.viewController?.stopLoadIndicator()
                     self.sortCart(filter: self.currentFilter)
+                    
+                    /*guard let order = self.orderService?.nftsStorage else { return }
+                    self.cartContent = order
+                    
+                    self.viewController?.updateCartTable()*/
+                    self.viewController?.updateCartTable()
                 case .failure(let error):
                     print(error)
                     self.viewController?.stopLoadIndicator()

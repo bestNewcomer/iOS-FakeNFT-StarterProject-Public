@@ -13,8 +13,21 @@ struct EmptyOrderRequest: NetworkRequest {
     var nfts: [String]?
     
     var endpoint: URL? {
-        URL(string: "https://\(RequestConstants.baseURL)/api/v1/orders/1")
+        var urlComponents = URLComponents(string: "\(RequestConstants.baseURL)/api/v1/orders/1")
+        
+        var components: [URLQueryItem] = []
+        
+        //components.append(URLQueryItem(name: "nfts", value: ""))
+        
+        urlComponents?.queryItems = components
+        return urlComponents?.url
     }
+    
+    var isUrlEncoded: Bool {
+      return true
+    }
+    
+    var dto: Encodable?
     
     init(nfts: [String]) {
         self.nfts = nfts

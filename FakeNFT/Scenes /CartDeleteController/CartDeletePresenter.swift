@@ -9,7 +9,7 @@ import UIKit
 
 protocol CartDeletePresenterProtocol {
     var nftImage: UIImage { get }
-    func deleteNftFromCart(completion: @escaping (Result<String, Error>) -> Void)
+    func deleteNftFromCart(completion: @escaping (Result<[String], Error>) -> Void)
 }
 
 final class CartDeletePresenter: CartDeletePresenterProtocol {
@@ -26,7 +26,7 @@ final class CartDeletePresenter: CartDeletePresenterProtocol {
         self.nftImage = nftImage
     }
     
-    func deleteNftFromCart(completion: @escaping (Result<String, Error>) -> Void) {
+    func deleteNftFromCart(completion: @escaping (Result<[String], Error>) -> Void) {
         viewController?.startLoadIndicator()
         orderService?.removeNftFromStorage(id: nftIdForDelete, completion: { result in
             switch result {
