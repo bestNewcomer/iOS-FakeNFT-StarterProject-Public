@@ -15,15 +15,18 @@ protocol CartDeleteControllerProtocol: AnyObject {
 
 final class CartDeleteViewController: UIViewController, CartDeleteControllerProtocol {
     
-    private var presenter: CartDeletePresenterProtocol?
+    internal var presenter: CartDeletePresenterProtocol?
     private let servicesAssembly: ServicesAssembly
     private (set) var nftImage: UIImage
     private var idForDelete: String
+    var cartController: CartViewController
     
-    init(servicesAssembly: ServicesAssembly, nftImage: UIImage, idForDelete: String) {
+    init(servicesAssembly: ServicesAssembly, nftImage: UIImage, idForDelete: String, cartContrroller: CartViewController) {
         self.servicesAssembly = servicesAssembly
         self.nftImage = nftImage
         self.idForDelete = idForDelete
+        self.cartController = cartContrroller
+        
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -144,6 +147,8 @@ final class CartDeleteViewController: UIViewController, CartDeleteControllerProt
             guard let self = self else { return }
             switch result {
             case .success(_):
+                self.cartController.presenter?.getOrder()
+                self.cartController.updateCartTable()
                 self.dismiss(animated: true)
             case let .failure(error):
                 print(error)
@@ -180,4 +185,3 @@ final class CartDeleteViewController: UIViewController, CartDeleteControllerProt
         self.present(alert, animated: true, completion: nil)
     }
 }
-

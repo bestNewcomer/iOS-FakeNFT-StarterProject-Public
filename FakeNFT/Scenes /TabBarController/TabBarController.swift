@@ -27,6 +27,7 @@ final class TabBarController: UITabBarController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         guard let servicesAssembly else { return }
 
         let catalogController = TestCatalogViewController(

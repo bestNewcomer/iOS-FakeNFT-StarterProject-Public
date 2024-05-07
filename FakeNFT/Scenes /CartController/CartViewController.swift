@@ -7,12 +7,10 @@
 
 import UIKit
 
-final class CartViewController: UIViewController, CartViewControllerProtocol {
+final class CartViewController: UIViewController, CartViewControllerProtocol, UITabBarControllerDelegate {
     
-    private var presenter: CartPresenterProtocol?
-    
+    var presenter: CartPresenterProtocol?
     let servicesAssembly: ServicesAssembly
-    
     init(servicesAssembly: ServicesAssembly) {
         self.servicesAssembly = servicesAssembly
         super.init(nibName: nil, bundle: nil)
@@ -78,20 +76,31 @@ final class CartViewController: UIViewController, CartViewControllerProtocol {
     
     private var loaderView = LoaderView()
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        presenter?.getOrder()
+        cartTable.reloadData()
+        showPlaceholder()
+        //presenter?.setOrder()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setupViews()
         setupConstraints()
 
-        presenter = CartPresenter(viewController: self)
+        presenter = CartPresenter(viewController: self, orderService: servicesAssembly.orderService, nftByIdService: servicesAssembly.nftByIdService)
         
         cartTable.register(CartTableViewCell.self, forCellReuseIdentifier: "CartTableViewCell")
         cartTable.delegate = self
         cartTable.dataSource = self
+        presenter?.getOrder()
+        //presenter?.setOrder()
         showPlaceholder()
         
-        print(UserDefaults.standard)
+
         let sorting = UserDefaults.standard.string(forKey: "Sort")
         if sorting == nil {
             print()
@@ -205,7 +214,6 @@ final class CartViewController: UIViewController, CartViewControllerProtocol {
             self.cartTable.reloadData()
             
             UserDefaults.standard.set("Цена", forKey: "Sort")
-            print(UserDefaults.standard)
             UserDefaults.standard.synchronize()
         } ))
         
@@ -234,7 +242,7 @@ final class CartViewController: UIViewController, CartViewControllerProtocol {
     }
     
     @objc private func didTapPaymentButton() {
-        let paymentController = PaymentViewController()
+        let paymentController = PaymentViewController(servicesAssembly: servicesAssembly, cartController: self)
         paymentController.hidesBottomBarWhenPushed = true
         navigationItem.backButtonTitle = ""
         navigationController?.pushViewController(paymentController, animated: true)
@@ -264,9 +272,8 @@ extension CartViewController: UITableViewDelegate {
 
 extension CartViewController: CartTableViewCellDelegate {
     func didTapDeleteButton(id: String, image: UIImage) {
-        let deleteViewController = CartDeleteViewController(servicesAssembly: servicesAssembly, nftImage: image, idForDelete: id)
+        let deleteViewController = CartDeleteViewController(servicesAssembly: servicesAssembly, nftImage: image, idForDelete: id, cartContrroller: self)
         deleteViewController.modalPresentationStyle = .overCurrentContext
         self.tabBarController?.present(deleteViewController, animated: true)
     }
 }
-

@@ -36,7 +36,16 @@ final class SuccessPayController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         setupViews()
+    }
+    
+    init() {
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     private func setupViews() {
@@ -58,19 +67,16 @@ final class SuccessPayController: UIViewController {
             
             catalogButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             catalogButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            catalogButton.heightAnchor.constraint(equalToConstant: 60),
+             catalogButton.heightAnchor.constraint(equalToConstant: 60),
             catalogButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16)
-
         ])
         
         successImage.translatesAutoresizingMaskIntoConstraints = false
         textLabel.translatesAutoresizingMaskIntoConstraints = false
         catalogButton.translatesAutoresizingMaskIntoConstraints = false
-
     }
     
     @objc private func didTapCatalogButton() {
         self.dismiss(animated: true)
     }
 }
-

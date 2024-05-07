@@ -15,11 +15,11 @@ protocol CartDeletePresenterProtocol {
 final class CartDeletePresenter: CartDeletePresenterProtocol {
     
     private weak var viewController: CartDeleteControllerProtocol?
-    private var orderService: OrderService?
+    private var orderService: OrderServiceProtocol?
     private var nftIdForDelete: String
     private (set) var nftImage: UIImage
     
-    init(viewController: CartDeleteControllerProtocol, orderService: OrderService,  nftIdForDelete: String, nftImage: UIImage) {
+    init(viewController: CartDeleteControllerProtocol, orderService: OrderServiceProtocol, nftIdForDelete: String, nftImage: UIImage) {
         self.viewController = viewController
         self.orderService = orderService
         self.nftIdForDelete = nftIdForDelete
@@ -41,4 +41,3 @@ final class CartDeletePresenter: CartDeletePresenterProtocol {
         } )
     }
 }
-
