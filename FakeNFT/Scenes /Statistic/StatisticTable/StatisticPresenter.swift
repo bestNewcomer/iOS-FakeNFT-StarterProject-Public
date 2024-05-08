@@ -1,26 +1,21 @@
 import Foundation
 
-protocol StatisticFabricDelegate: AnyObject {
-    func reloadData()
-    func showError(with error: Error)
-}
-
-final class StatisticFabric {
+final class StatisticPresenter {
     
     var onNeedUpdate: (() -> Void)?
     
     private var listOfLeaderboard: [UsersModel] = []
-    weak var delegate: StatisticFabricDelegate?
+    weak var view: StatisticProtocol?
     private var usersService: UsersService
     
     private let dispatchGroup = DispatchGroup()
     
     init(
-        delegate: StatisticFabricDelegate,
+        view: StatisticProtocol,
         servicesAssembly: ServicesAssembly
     ) {
         self.usersService = servicesAssembly.usersService
-        self.delegate = delegate
+        self.view = view
         dispatchGroup.enter()
         self.setListOfLeaderboard()
         dispatchGroup.notify(queue: .main) {
@@ -42,7 +37,7 @@ final class StatisticFabric {
                     self?.listOfLeaderboard = users
                     self?.getSortedLeaderboard()
                 case .failure(let error):
-                    self?.delegate?.showError(with: error)
+                    self?.view?.showError(with: error)
                     
                 }
             }
@@ -73,12 +68,12 @@ final class StatisticFabric {
         listOfLeaderboard = listOfLeaderboard.sorted {
             $0.name < $1.name
         }
-        delegate?.reloadData()
+        view?.reloadData()
     }
     
     func sortLeaderboardByRating() {
         
         getSortedLeaderboard()
-        delegate?.reloadData()
+        view?.reloadData()
     }
 }

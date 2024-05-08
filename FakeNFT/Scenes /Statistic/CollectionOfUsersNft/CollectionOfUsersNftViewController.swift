@@ -4,7 +4,7 @@ import UIKit
 final class CollectionOfUsersNftViewController: UIViewController {
     
     private var servicesAssembly: ServicesAssembly
-    private var collectionOfNftFabric: CollectionOfNftFabric
+    private var presenter: CollectionOfNftPresenter
     private let collectionParams = GeometricParams(
         heightCell: 172,
         cellCount: 3,
@@ -41,7 +41,7 @@ final class CollectionOfUsersNftViewController: UIViewController {
     init(with nfts: [String]?,
          servicesAssembly: ServicesAssembly) {
         self.servicesAssembly = servicesAssembly
-        self.collectionOfNftFabric = CollectionOfNftFabric(
+        self.presenter = CollectionOfNftPresenter(
             with: nfts, servicesAssembly: servicesAssembly
         )
         super.init(nibName: nil, bundle: nil)
@@ -124,12 +124,12 @@ extension CollectionOfUsersNftViewController {
     
     func setupHiddensViews() {
         
-        collection.isHidden = collectionOfNftFabric.isEmpty()
-        placeholderLabel.isHidden = !collectionOfNftFabric.isEmpty()
+        collection.isHidden = presenter.isEmpty()
+        placeholderLabel.isHidden = !presenter.isEmpty()
     }
     
     func setUpdateCollection() {
-        collectionOfNftFabric.onNeedUpdate = { [weak self] in
+        presenter.onNeedUpdate = { [weak self] in
             self?.setupHiddensViews()
             self?.collection.reloadData()
         }
@@ -140,7 +140,7 @@ extension CollectionOfUsersNftViewController {
 extension CollectionOfUsersNftViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        collectionOfNftFabric.getNftsCount()
+        presenter.getNftsCount()
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -151,16 +151,16 @@ extension CollectionOfUsersNftViewController: UICollectionViewDataSource {
         }
         cell.prepareForReuse()
         
-        let nft = collectionOfNftFabric.getNft(by: indexPath.row)
-        let nfts = collectionOfNftFabric.getNfts()
+        let nft = presenter.getNft(by: indexPath.row)
+        let nfts = presenter.getNfts()
         
         cell.configureCell(
             with: nft,
             and: nfts,
             servicesAssembly: servicesAssembly,
             interactorAssembly: InteractorsAssembly(
-                likesInteractor: collectionOfNftFabric.self,
-                basketInteractor: collectionOfNftFabric.self
+                likesInteractor: presenter.self,
+                basketInteractor: presenter.self
             )
         )
         

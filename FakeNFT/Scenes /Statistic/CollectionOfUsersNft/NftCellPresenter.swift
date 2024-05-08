@@ -10,9 +10,9 @@ protocol NftCellFabricProtocol {
 }
 
 //MARK: - NftCellFabric
-final class NftCellFabric {
+final class NftCellPresenter {
     
-    weak var delegate: NftCellDelegate?
+    weak var view: NftCellDelegate?
     weak var likesInteractor: LikesInteraction?
     weak var basketInteractor: BasketInteraction?
     
@@ -24,14 +24,14 @@ final class NftCellFabric {
     init(
         nft: NftModel,
         servicesAssembly: ServicesAssembly,
-        with delegate: NftCellDelegate,
+        with view: NftCellDelegate,
         interactorAssembly: InteractorsAssembly
     ) {
         self.nft = nft
         self.basketService = servicesAssembly.basketService
         self.profileService = servicesAssembly.profileService
         
-        self.delegate = delegate
+        self.view = view
         self.likesInteractor = interactorAssembly.likesInteractor
         self.basketInteractor = interactorAssembly.basketInteractor
         
@@ -41,7 +41,7 @@ final class NftCellFabric {
 }
 
 //MARK: - NftCellFabricProtocol
-extension NftCellFabric: NftCellFabricProtocol {
+extension NftCellPresenter: NftCellFabricProtocol {
     
     func getNft() -> NftModel {
         
@@ -70,7 +70,7 @@ extension NftCellFabric: NftCellFabricProtocol {
 }
 
 //MARK: - BasketNetworkService
-extension NftCellFabric {
+extension NftCellPresenter {
     
     func setNftOnBasket() {
         
@@ -78,7 +78,7 @@ extension NftCellFabric {
             switch result {
             case .success(let basket):
                 self?.basketInteractor?.updateNfts(with: basket)
-                self?.delegate?.setBasket()
+                self?.view?.setBasket()
             case .failure(let error):
                 print(error)
             }
@@ -103,7 +103,7 @@ extension NftCellFabric {
         basketService.updateNft(basket: dto) { [weak self] result in
             switch result {
             case .success(let basket):
-                self?.delegate?.setBasket()
+                self?.view?.setBasket()
                 self?.basketInteractor?.updateNfts(with: basket)
             case .failure(let error):
                 print(error)
@@ -113,7 +113,7 @@ extension NftCellFabric {
     
     func isOnBasket() -> Bool {
         
-        guard let nfts = basketInteractor?.getBasketNfts() else { return false}
+        guard let nfts = basketInteractor?.getBasketNfts() else { return false }
         return nfts.contains {
             $0 == nft.id
         }
@@ -121,7 +121,7 @@ extension NftCellFabric {
 }
 
 //MARK: - LikeNetworkService
-extension NftCellFabric {
+extension NftCellPresenter {
     
     func setNftWithLike() {
         
@@ -129,7 +129,7 @@ extension NftCellFabric {
             switch result {
             case .success(let profile):
                 self?.likesInteractor?.updateLikes(with: profile)
-                self?.delegate?.setLike()
+                self?.view?.setLike()
             case .failure(let error):
                 print(error)
             }
@@ -153,11 +153,11 @@ extension NftCellFabric {
         guard let dto = likesInteractor?.getProfile() else { return }
         profileService
             .updateLikes(
-                profile: dto//likesInteractor?.getLikesString()
+                profile: dto
             ) { [weak self] result in
             switch result {
             case .success(let profile):
-                self?.delegate?.setLike()
+                self?.view?.setLike()
                 self?.likesInteractor?.updateLikes(with: profile)
             case .failure(let error):
                 print(error)

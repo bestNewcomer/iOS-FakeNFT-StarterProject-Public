@@ -128,7 +128,7 @@ struct DefaultNetworkClient: NetworkClient {
           urlRequest.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
         }
         
-        let token = "107f0274-8faf-4343-b31f-c12b62673e2f"
+        let token = RequestConstants.token
         urlRequest
             .setValue("\(token)",
                       forHTTPHeaderField: "X-Practicum-Mobile-Token")

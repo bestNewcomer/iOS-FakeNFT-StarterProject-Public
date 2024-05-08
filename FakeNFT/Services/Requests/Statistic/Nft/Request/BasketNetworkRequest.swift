@@ -6,6 +6,6 @@ struct BasketRequest: NetworkRequest {
     var dto: Encodable?
     var httpMethod: HttpMethod
     var endpoint: URL? {
-        URL(string: "\(RequestConstants.baseURL)/api/v1/orders/1")
+        URL(string: "\(RequestConstants.baseURL)/\(RequestConstants.order)")
     }
 }

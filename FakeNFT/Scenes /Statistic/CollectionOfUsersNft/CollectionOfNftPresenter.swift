@@ -41,7 +41,7 @@ struct Profile: Codable {
 }
 
 //MARK: - CollectionOfNftFabric
-final class CollectionOfNftFabric {
+final class CollectionOfNftPresenter {
     
     var onNeedUpdate: (() -> Void)?
     
@@ -121,7 +121,7 @@ final class CollectionOfNftFabric {
 }
 
 //MARK: - LikesInteraction
-extension CollectionOfNftFabric: LikesInteraction {
+extension CollectionOfNftPresenter: LikesInteraction {
     
     func getProfile() -> Profile {
         
@@ -157,7 +157,7 @@ extension CollectionOfNftFabric: LikesInteraction {
 }
 
 //MARK: - BasketInteraction
-extension CollectionOfNftFabric: BasketInteraction {
+extension CollectionOfNftPresenter: BasketInteraction {
     
     func getBasket() -> Basket {
         

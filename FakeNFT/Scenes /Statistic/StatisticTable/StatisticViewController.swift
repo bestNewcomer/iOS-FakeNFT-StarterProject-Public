@@ -1,11 +1,16 @@
 import UIKit
 
+protocol StatisticProtocol: AnyObject {
+    func reloadData()
+    func showError(with error: Error)
+}
+
 //MARK: - StatisticViewController
 final class StatisticViewController: UIViewController {
     
 //    private var mockData = MockData.shared
     let servicesAssembly: ServicesAssembly
-    private var statisticFabric: StatisticFabric?
+    private var presenter: StatisticPresenter?
     
     private var tableView: UITableView = {
         let tableView = UITableView()
@@ -26,7 +31,7 @@ final class StatisticViewController: UIViewController {
     init(servicesAssembly: ServicesAssembly) {
         self.servicesAssembly = servicesAssembly
         super.init(nibName: nil, bundle: nil)
-        statisticFabric = StatisticFabric(delegate: self, servicesAssembly: servicesAssembly)
+        presenter = StatisticPresenter(view: self, servicesAssembly: servicesAssembly)
     }
     
     required init?(coder: NSCoder) {
@@ -50,11 +55,11 @@ final class StatisticViewController: UIViewController {
         }()
         let sortByName = UIAlertAction(title: NSLocalizedString("Alert.sort.byName", comment: ""),
                                        style: .default) { [weak self] _ in
-            self?.statisticFabric?.sortLeaderboardByName()
+            self?.presenter?.sortLeaderboardByName()
         }
         let sortByRating = UIAlertAction(title: NSLocalizedString("Alert.sort.byRating", comment: ""),
                                          style: .default) { [weak self] _ in
-            self?.statisticFabric?.sortLeaderboardByRating()
+            self?.presenter?.sortLeaderboardByRating()
         }
         let actionCancel = UIAlertAction(title: NSLocalizedString("Close", comment: ""),
                                          style: .cancel)
@@ -95,7 +100,7 @@ extension StatisticViewController {
     }
     
     private func reloadFabric() {
-        statisticFabric = StatisticFabric(delegate: self, servicesAssembly: servicesAssembly)
+        presenter = StatisticPresenter(view: self, servicesAssembly: servicesAssembly)
     }
 }
 
@@ -135,7 +140,7 @@ extension StatisticViewController {
     }
     
     func setUpdateTable() {
-        statisticFabric?.onNeedUpdate = { [weak self] in
+        presenter?.onNeedUpdate = { [weak self] in
             self?.tableView.reloadData()
         }
     }
@@ -145,7 +150,7 @@ extension StatisticViewController {
 extension StatisticViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        statisticFabric?.getCountOfLeaderboard() ?? 0
+        presenter?.getCountOfLeaderboard() ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -153,11 +158,11 @@ extension StatisticViewController: UITableViewDataSource {
             let cell = tableView.dequeueReusableCell(
             withIdentifier: StatisticTableViewCell.reusedIdentifier,
             for: indexPath) as? StatisticTableViewCell,
-            let statisticFabric = statisticFabric
+            let presenter = presenter
         else { return UITableViewCell() }
         
         cell.loadData(
-            with: statisticFabric.getUserFromLeaderboard(by: indexPath.row),
+            with: presenter.getUserFromLeaderboard(by: indexPath.row),
             position: indexPath.row + 1)
         
         return cell
@@ -182,8 +187,8 @@ extension StatisticViewController: UITableViewDelegate {
     }
 }
 
-//MARK: - StatisticFabricDelegate
-extension StatisticViewController: StatisticFabricDelegate, ErrorView {
+//MARK: - StatisticProtocol
+extension StatisticViewController: StatisticProtocol, ErrorView {
     
     func reloadData() {
         tableView.reloadData()
