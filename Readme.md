@@ -212,6 +212,7 @@
 ![Simulator Screen Recording - iPhone 15 - 2024-05-01 at 13 32 14](https://github.com/4Leonid/iOS-FakeNFT-StarterProject-Public/assets/134210806/46d5401e-b44b-4232-981c-63ef11bce23a)
 
 **Экрана Корзины:**
+
 ![Simulator Screen Recording - iPhone 15 Pro]([https://github.com/4Leonid/iOS-FakeNFT-StarterProject-Public/assets/134210806/46d5401e-b44b-4232-981c-63ef11bce23a](https://github.com/4Leonid/iOS-FakeNFT-StarterProject-Public/blob/develop/FakeNFT/Resources/Assets.xcassets/%D0%97%D0%B0%D0%BF%D0%B8%D1%81%D1%8C%20%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202024-05-08%20%D0%B2%2015.08.16.dataset/%D0%97%D0%B0%D0%BF%D0%B8%D1%81%D1%8C%20%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202024-05-08%20%D0%B2%2015.08.16.mov))
 
 
