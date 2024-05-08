@@ -2,8 +2,8 @@ import UIKit
 
 //MARK: - Protocol
 protocol NftCellDelegate: AnyObject {
-    func isLiked(with id: String) -> Bool
-    func isOnBasket(with id: String) -> Bool
+    func setLike()
+    func setBasket()
 }
 
 //MARK: - NftCell
@@ -11,10 +11,21 @@ final class NftCell: UICollectionViewCell {
     
     //MARK: - Properties
     static let identifier = "NftCollectionCell"
-    weak var delegate: NftCellDelegate?
-    private var id: String = ""
+    
+    private var nft: NftModel?
+    private var servicesAssembly: ServicesAssembly?
+    private var interactorAssembly: InteractorsAssembly?
+    
+    private var nfts: [String] = []
+    
     private lazy var nftCellFabric: NftCellFabric = {
-        let nftCellFabric = NftCellFabric(with: id)
+        
+        let nftCellFabric = NftCellFabric(
+            nft: nft!,
+            servicesAssembly: servicesAssembly!,
+            with: self, 
+            interactorAssembly: interactorAssembly!
+        )
         return nftCellFabric
     }()
     
@@ -42,7 +53,6 @@ final class NftCell: UICollectionViewCell {
         let nftInfoStackView = UIStackView()
         nftInfoStackView.axis = .vertical
         nftInfoStackView.spacing = 4
-//        nftInfoStackView.distribution = .fillEqually
         return nftInfoStackView
     }()
 
@@ -56,7 +66,6 @@ final class NftCell: UICollectionViewCell {
         let bottomStackView = UIStackView()
         bottomStackView.axis = .horizontal
         bottomStackView.spacing = 4
-//        bottomStackView.distribution = .fillEqually
         return bottomStackView
     }()
 
@@ -65,7 +74,6 @@ final class NftCell: UICollectionViewCell {
         let leftStackView = UIStackView()
         leftStackView.axis = .vertical
         leftStackView.spacing = 4
-//        leftStackView.distribution = .fillEqually
         return leftStackView
     }()
 
@@ -83,8 +91,8 @@ final class NftCell: UICollectionViewCell {
     
     //MARK: basketButton
     private lazy var basketImageView: UIImageView = {
-        let basketImageActive = UIImage(resource: .addToCart)
-        let basketImageInactive = UIImage(resource: .deleteFromCart)
+        let basketImageActive = UIImage(resource: .deleteFromCart)
+        let basketImageInactive = UIImage(resource: .addToCart)
         let basketImageView = UIImageView(image: basketImageInactive, highlightedImage: basketImageActive)
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(basketButtonTapped))
         basketImageView.isUserInteractionEnabled = true
@@ -106,12 +114,22 @@ final class NftCell: UICollectionViewCell {
     //MARK: - objc Methods
     @objc
     func likeButtonTapped() {
-        
+        guard let id = nft?.id else { return }
+        if likeImageView.isHighlighted {
+            nftCellFabric.deleteNftWithoutLike(with: id)
+        } else {
+            nftCellFabric.appendNftWithLike(with: id)
+        }
     }
     
     @objc
     func basketButtonTapped() {
-        
+        guard let id = nft?.id else { return }
+        if basketImageView.isHighlighted {
+            nftCellFabric.deleteNftFromBasket(with: id)
+        } else {
+            nftCellFabric.appendNftToBasket(with: id)
+        }
     }
 }
 
@@ -128,14 +146,8 @@ extension NftCell {
         
         //MARK: - Add Views
         //MARK: Base View
-        [nftImageView, nftInfoStackView].forEach {
+        [nftImageView, likeImageView, nftInfoStackView].forEach {
             contentView.addSubview($0)
-            $0.translatesAutoresizingMaskIntoConstraints = false
-        }
-        
-        //MARK: likeImageView
-        [likeImageView].forEach {
-            nftImageView.addSubview($0)
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
         
@@ -200,8 +212,16 @@ extension NftCell {
         ])
     }
     
-    func configureCell(with data: NftModel) {
-        id = data.id
+    func configureCell(
+        with data: NftModel,
+        and nfts: [String],
+        servicesAssembly: ServicesAssembly,
+        interactorAssembly: InteractorsAssembly?
+    ) {
+        nft = data
+        self.nfts = nfts
+        self.servicesAssembly = servicesAssembly
+        self.interactorAssembly = interactorAssembly
         
         setAvatar()
         setRating()
@@ -219,33 +239,42 @@ extension NftCell {
         
         let placeholderAvatar = UIImage(systemName: "person.crop.circle.fill")?.withTintColor(UIColor(resource: .ypGrayUn), renderingMode: .alwaysOriginal)
         
-        let avatarUrl = nftCellFabric.getAvatar(with: id)
+        let avatarUrl = nftCellFabric.getAvatar()
         nftImageView.kf.setImage(with: avatarUrl, placeholder: placeholderAvatar)
     }
     
     func setRating() {
-        let ratingNft = nftCellFabric.getRating(with: id)
+        
+        let ratingNft = nftCellFabric.getRating()
         nftRating.rating = ratingNft
         nftRating.setStars()
     }
     
     func setName() {
-        let name = nftCellFabric.getName(with: id)
+        
+        let name = nftCellFabric.getName()
         nameLabel.text = name
     }
     
     func setCost() {
-        let cost = nftCellFabric.getCost(with: id)
+        
+        let cost = nftCellFabric.getCost()
         costLabel.text = cost
     }
-    
+}
+
+//MARK: - NftCellDelegate
+extension NftCell: NftCellDelegate {
+
     func setLike() {
-        let isLike = nftCellFabric.isLiked(with: id)
+        
+        let isLike = nftCellFabric.isLiked()
         likeImageView.isHighlighted = isLike ? true : false
     }
     
     func setBasket() {
-        let isBasket = nftCellFabric.isOnBasket(with: id)
-        basketImageView.isHighlighted = isBasket ? false : true
+        
+        let isBasket = nftCellFabric.isOnBasket()
+        basketImageView.isHighlighted = isBasket ? true : false
     }
 }

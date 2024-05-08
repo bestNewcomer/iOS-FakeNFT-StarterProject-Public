@@ -4,9 +4,16 @@ import UIKit
 final class CollectionOfUsersNftViewController: UIViewController {
     
     private var servicesAssembly: ServicesAssembly
-    private var collectionOfNftFabric = CollectionOfNftFabric()
+    private var collectionOfNftFabric: CollectionOfNftFabric
+    private let collectionParams = GeometricParams(
+        heightCell: 172,
+        cellCount: 3,
+        leftInset: 0,
+        rightInset: 0,
+        cellSpacing: 10
+    )
     
-    lazy private var collection: UICollectionView = {
+    private lazy var collection: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
@@ -23,8 +30,20 @@ final class CollectionOfUsersNftViewController: UIViewController {
         return sortButton
     }()
     
-    init(servicesAssembly: ServicesAssembly) {
+    private lazy var placeholderLabel: UILabel = {
+        let placeholderLabel = UILabel()
+        placeholderLabel.font = UIFont.sfProBold17
+        placeholderLabel.isHidden = true
+        placeholderLabel.text = NSLocalizedString("Statistic.collectionsOfNft.emptyNfts", comment: "")
+        return placeholderLabel
+    }()
+    
+    init(with nfts: [String]?,
+         servicesAssembly: ServicesAssembly) {
         self.servicesAssembly = servicesAssembly
+        self.collectionOfNftFabric = CollectionOfNftFabric(
+            with: nfts, servicesAssembly: servicesAssembly
+        )
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -37,6 +56,7 @@ final class CollectionOfUsersNftViewController: UIViewController {
         super.viewDidLoad()
         
         setupNavigation()
+        setUpdateCollection()
         activateUI()
     }
     
@@ -53,7 +73,7 @@ extension CollectionOfUsersNftViewController {
     func setupNavigation() {
         
         navigationController?.view.backgroundColor = UIColor(resource: .ypWhite)
-        navigationController?.title = "Коллекция NFT"
+        navigationController?.title = NSLocalizedString("Statistic.userCard.collectionOfNft", comment: "")
         navigationItem.leftBarButtonItem = backwardButton
     }
 }
@@ -65,6 +85,7 @@ extension CollectionOfUsersNftViewController {
         
         setupCollection()
         activateConstraint()
+        setupHiddensViews()
     }
     
     func setupCollection() {
@@ -80,16 +101,38 @@ extension CollectionOfUsersNftViewController {
     
     func activateConstraint() {
         
-        view.addSubview(collection)
-        collection.translatesAutoresizingMaskIntoConstraints = false
+        [collection, placeholderLabel].forEach {
+            view.addSubview($0)
+            $0.translatesAutoresizingMaskIntoConstraints = false
+        }
         
+        //MARK: Constraints
         let safeArea = view.safeAreaLayoutGuide
         NSLayoutConstraint.activate([
+            
+            //MARK: Collection
             collection.topAnchor.constraint(equalTo: safeArea.topAnchor, constant: 20),
             collection.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor),
             collection.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: 16),
-            collection.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: -16)
+            collection.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: -16),
+            
+            //MARK: PlaceholderLabel
+            placeholderLabel.centerYAnchor.constraint(equalTo: safeArea.centerYAnchor),
+            placeholderLabel.centerXAnchor.constraint(equalTo: safeArea.centerXAnchor)
         ])
+    }
+    
+    func setupHiddensViews() {
+        
+        collection.isHidden = collectionOfNftFabric.isEmpty()
+        placeholderLabel.isHidden = !collectionOfNftFabric.isEmpty()
+    }
+    
+    func setUpdateCollection() {
+        collectionOfNftFabric.onNeedUpdate = { [weak self] in
+            self?.setupHiddensViews()
+            self?.collection.reloadData()
+        }
     }
 }
 
@@ -109,7 +152,17 @@ extension CollectionOfUsersNftViewController: UICollectionViewDataSource {
         cell.prepareForReuse()
         
         let nft = collectionOfNftFabric.getNft(by: indexPath.row)
-        cell.configureCell(with: nft)
+        let nfts = collectionOfNftFabric.getNfts()
+        
+        cell.configureCell(
+            with: nft,
+            and: nfts,
+            servicesAssembly: servicesAssembly,
+            interactorAssembly: InteractorsAssembly(
+                likesInteractor: collectionOfNftFabric.self,
+                basketInteractor: collectionOfNftFabric.self
+            )
+        )
         
         return cell
     }
@@ -119,9 +172,11 @@ extension CollectionOfUsersNftViewController: UICollectionViewDataSource {
 extension CollectionOfUsersNftViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let avaiableWidth = collectionView.frame.width - (10*2)
-        let cellWidth = avaiableWidth / CGFloat(3)
-        return CGSize(width: cellWidth, height: 172)
+        
+        let avaiableWidth = collectionView.frame.width - collectionParams.paddingWidth
+        let cellWidth = avaiableWidth / CGFloat(collectionParams.cellCount)
+        return CGSize(width: cellWidth,
+                      height: collectionParams.heightCell)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
