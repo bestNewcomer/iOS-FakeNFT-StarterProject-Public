@@ -29,7 +29,7 @@ final class NftByIdService: NftByIdServiceProtocol {
             return
         }
 
-        let request = NFTRequest(id: id)
+        let request = NFTGetRequest(id: id)
         networkClient.send(request: request, type: NftDataModel.self) { [weak storage] result in
             switch result {
             case .success(let nft):

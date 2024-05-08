@@ -186,7 +186,7 @@ final class EditProfileViewController: UIViewController {
                         let URL = textField.text
                     else { return }
                     
-                    if validateURLFormat(urlString: URL) {
+                    if self.validateURLFormat(urlString: URL) {
                         self.loadAvatarLabel.text = URL
                         self.newAvatarURL = URL
                     } else {

@@ -33,10 +33,19 @@ final class TabBarController: UITabBarController {
             tag: 0
         )
         
+        let cartTabBarItem = UITabBarItem(
+            title: "Корзина",
+            image: UIImage(named: "Cart"),
+            tag: 2
+        )
+        
         let profileNC = UINavigationController(rootViewController: appConfiguration.profileViewController)
         profileNC.tabBarItem = profileTabBarItem
         
-        viewControllers = [profileNC, catalogNC]
+        let cartNC = UINavigationController(rootViewController: appConfiguration.cartViewController)
+        cartNC.tabBarItem = cartTabBarItem
+        
+        viewControllers = [profileNC, catalogNC, cartNC]
         
         tabBar.isTranslucent = false
         view.tintColor = .ypBlueUn

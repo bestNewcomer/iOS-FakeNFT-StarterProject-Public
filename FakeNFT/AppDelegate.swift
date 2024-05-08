@@ -20,7 +20,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
             name: "FakeNFT",
             sessionRole: connectingSceneSession.role
         )
-        sceneConfiguration.delegateClass = SceneDelegate.self
+        sceneConfiguration.delegateClass =  SceneDelegate.self
         return sceneConfiguration
     }
 }

@@ -238,7 +238,8 @@ extension PaymentViewController: UICollectionViewDelegateFlowLayout {
 
 extension PaymentViewController: UITextViewDelegate {
     func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
-        let termsOfUseVC = WebViewController(url: termsUrl)
+        let webPresenter = WebViewPresenter()
+        let termsOfUseVC = WebViewController(presenter: webPresenter, url: termsUrl)
         navigationItem.title = ""
         navigationController?.pushViewController(termsOfUseVC, animated: true)
         return false

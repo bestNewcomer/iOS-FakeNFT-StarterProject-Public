@@ -13,9 +13,11 @@ final class AppConfiguration {
   var servicesAssembly: ServicesAssembly!
   private let catalogNavigationController: UINavigationController
   private let cartService: CartControllerProtocol
+  let cartViewController: CartViewController
   
   init() {
-    let servicesAssembly = ServicesAssembly(networkClient: DefaultNetworkClient(), nftStorage: NftStorageImpl())
+    let servicesAssembly = ServicesAssembly(networkClient: DefaultNetworkClient(), nftStorage: NftStorageImpl(), orderStorage: OrderStorage(),
+        nftByIdStorage: NftByIdStorage())
     let profilePresenter = ProfilePresenter()
     profileViewController = ProfileViewController(servicesAssembly: servicesAssembly)
     profileViewController.presenter = profilePresenter
@@ -32,5 +34,9 @@ final class AppConfiguration {
     catalogPresenter.viewController = catalogViewController
     catalogNavigationController = UINavigationController(rootViewController: catalogViewController)
     router.viewController = catalogViewController
+      
+    let cartController = CartViewController(servicesAssembly: servicesAssembly)
+    self.cartViewController = cartController
+    let cartNavigationController = UINavigationController(rootViewController: cartController)
   }
 }

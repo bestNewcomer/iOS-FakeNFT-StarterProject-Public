@@ -9,9 +9,9 @@ protocol NftServiceProtocol {
 final class NftService: NftServiceProtocol {
 
     private let networkClient: NetworkClient
-    private let storage: NftStorageProtocol
+    private let storage: NftStorage
 
-    init(networkClient: NetworkClient, storage: NftStorageProtocol) {
+    init(networkClient: NetworkClient, storage: NftStorage) {
         self.storage = storage
         self.networkClient = networkClient
     }
