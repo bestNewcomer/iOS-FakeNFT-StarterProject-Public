@@ -53,6 +53,8 @@ final class TabBarController: UITabBarController {
         tabBar.unselectedItemTintColor = .ypBlack
         tabBar.tintColor = .ypBlack
         
+        view.backgroundColor = .systemBackground
+        
         if #available(iOS 15.0, *) {
             let appearance = UITabBarAppearance()
             appearance.configureWithOpaqueBackground()
