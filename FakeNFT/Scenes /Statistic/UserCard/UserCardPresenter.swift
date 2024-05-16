@@ -9,7 +9,7 @@ protocol UserCardProtocol {
     func getCountOfNft() -> String
 }
 
-final class UserCardFabric {
+final class UserCardPresenter {
     
     private let mockData = MockData.shared
     private var profileUser: UsersModel
@@ -19,7 +19,7 @@ final class UserCardFabric {
     }
 }
 
-extension UserCardFabric: UserCardProtocol {
+extension UserCardPresenter: UserCardProtocol {
     
     func getNfts() -> [String]? {
         

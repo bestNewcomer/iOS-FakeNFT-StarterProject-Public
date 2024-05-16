@@ -6,7 +6,7 @@ struct ProfilePutRequest: NetworkRequest {
     var dto: Encodable?
     var httpMethod: HttpMethod = .put
     var endpoint: URL? {
-        var urlComponents = URLComponents(string: "\(RequestConstants.baseURL)/api/v1/profile/1")
+        var urlComponents = URLComponents(string: "\(RequestConstants.baseURL)/\(RequestConstants.profile)")
         var components: [URLQueryItem] = []
         
         for like in profile.likes {

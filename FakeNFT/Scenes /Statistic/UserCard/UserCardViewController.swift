@@ -4,7 +4,7 @@ import SafariServices
 //MARK: - UserCardViewController
 final class UserCardViewController: UIViewController {
     
-    private var userCardFabric: UserCardFabric
+    private var presenter: UserCardPresenter
     private var servicesAssembly: ServicesAssembly
     
     private lazy var backwardButton: UIBarButtonItem = {
@@ -96,7 +96,7 @@ final class UserCardViewController: UIViewController {
     
     //MARK: init
     init(user: UsersModel, servicesAssembly: ServicesAssembly) {
-        self.userCardFabric = UserCardFabric(with: user)
+        self.presenter = UserCardPresenter(with: user)
         self.servicesAssembly = servicesAssembly
         super.init(nibName: nil, bundle: nil)
     }
@@ -129,7 +129,7 @@ final class UserCardViewController: UIViewController {
     
     @objc
     private func showUsersCollectionOfNft() {
-        let nfts = userCardFabric.getNfts()
+        let nfts = presenter.getNfts()
         let vc = CollectionOfUsersNftViewController(
             with: nfts,
             servicesAssembly: servicesAssembly)
@@ -264,7 +264,7 @@ extension UserCardViewController: UserCardProtocol {
         
         let placeholderAvatar = UIImage(systemName: "person.crop.circle.fill")?.withTintColor(UIColor(resource: .ypGrayUn), renderingMode: .alwaysOriginal)
         
-        let avatarUrl = userCardFabric.getAvatar()
+        let avatarUrl = presenter.getAvatar()
         avatarImageView.kf.setImage(with: avatarUrl, placeholder: placeholderAvatar)
         return avatarUrl
     }
@@ -272,7 +272,7 @@ extension UserCardViewController: UserCardProtocol {
     @discardableResult
     func getName() -> String {
         
-        let nameUser = userCardFabric.getName()
+        let nameUser = presenter.getName()
         nameLabel.text = nameUser
         return nameUser
     }
@@ -280,7 +280,7 @@ extension UserCardViewController: UserCardProtocol {
     @discardableResult
     func getDescription() -> String {
         
-        let descriptionUser = userCardFabric.getDescription()
+        let descriptionUser = presenter.getDescription()
         descriptionLabel.text = descriptionUser
         return descriptionUser
     }
@@ -288,13 +288,13 @@ extension UserCardViewController: UserCardProtocol {
     @discardableResult
     func getCountOfNft() -> String {
         
-        let countOfNft = userCardFabric.getCountOfNft()
+        let countOfNft = presenter.getCountOfNft()
         countOfNftLabel.text = (" \(countOfNft)")
         return countOfNft
     }
     
     func getWebsiteUser() -> URL? {
         
-        userCardFabric.getWebsiteUser()
+        presenter.getWebsiteUser()
     }
 }

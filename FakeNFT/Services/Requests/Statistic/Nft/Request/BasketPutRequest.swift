@@ -6,7 +6,7 @@ struct BasketPutRequest: NetworkRequest {
     var dto: Encodable?
     var httpMethod: HttpMethod = .put
     var endpoint: URL? {
-        var urlComponents = URLComponents(string: "\(RequestConstants.baseURL)/api/v1/orders/1")
+        var urlComponents = URLComponents(string: "\(RequestConstants.baseURL)/\(RequestConstants.order)")
         var components: [URLQueryItem] = []
         
         for nft in basket.nfts {

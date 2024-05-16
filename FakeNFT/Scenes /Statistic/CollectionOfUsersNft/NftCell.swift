@@ -18,9 +18,9 @@ final class NftCell: UICollectionViewCell {
     
     private var nfts: [String] = []
     
-    private lazy var nftCellFabric: NftCellFabric = {
+    private lazy var presenter: NftCellPresenter = {
         
-        let nftCellFabric = NftCellFabric(
+        let nftCellFabric = NftCellPresenter(
             nft: nft!,
             servicesAssembly: servicesAssembly!,
             with: self, 
@@ -116,9 +116,9 @@ final class NftCell: UICollectionViewCell {
     func likeButtonTapped() {
         guard let id = nft?.id else { return }
         if likeImageView.isHighlighted {
-            nftCellFabric.deleteNftWithoutLike(with: id)
+            presenter.deleteNftWithoutLike(with: id)
         } else {
-            nftCellFabric.appendNftWithLike(with: id)
+            presenter.appendNftWithLike(with: id)
         }
     }
     
@@ -126,9 +126,9 @@ final class NftCell: UICollectionViewCell {
     func basketButtonTapped() {
         guard let id = nft?.id else { return }
         if basketImageView.isHighlighted {
-            nftCellFabric.deleteNftFromBasket(with: id)
+            presenter.deleteNftFromBasket(with: id)
         } else {
-            nftCellFabric.appendNftToBasket(with: id)
+            presenter.appendNftToBasket(with: id)
         }
     }
 }
@@ -239,26 +239,26 @@ extension NftCell {
         
         let placeholderAvatar = UIImage(systemName: "person.crop.circle.fill")?.withTintColor(UIColor(resource: .ypGrayUn), renderingMode: .alwaysOriginal)
         
-        let avatarUrl = nftCellFabric.getAvatar()
+        let avatarUrl = presenter.getAvatar()
         nftImageView.kf.setImage(with: avatarUrl, placeholder: placeholderAvatar)
     }
     
     func setRating() {
         
-        let ratingNft = nftCellFabric.getRating()
+        let ratingNft = presenter.getRating()
         nftRating.rating = ratingNft
         nftRating.setStars()
     }
     
     func setName() {
         
-        let name = nftCellFabric.getName()
+        let name = presenter.getName()
         nameLabel.text = name
     }
     
     func setCost() {
         
-        let cost = nftCellFabric.getCost()
+        let cost = presenter.getCost()
         costLabel.text = cost
     }
 }
@@ -268,13 +268,13 @@ extension NftCell: NftCellDelegate {
 
     func setLike() {
         
-        let isLike = nftCellFabric.isLiked()
+        let isLike = presenter.isLiked()
         likeImageView.isHighlighted = isLike ? true : false
     }
     
     func setBasket() {
         
-        let isBasket = nftCellFabric.isOnBasket()
+        let isBasket = presenter.isOnBasket()
         basketImageView.isHighlighted = isBasket ? true : false
     }
 }
