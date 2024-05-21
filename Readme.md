@@ -201,3 +201,19 @@
 - экран «Корзина» — по названию;
 - экран «Мои NFT» — по рейтингу;
 - экран «Статистика» — по рейтингу.
+
+# Демонстрация
+**Экрана Профиля:**
+
+![Simulator Screen Recording - iPhone 15 - 2024-05-01 at 13 00 37](https://github.com/4Leonid/iOS-FakeNFT-StarterProject-Public/assets/134210806/f7e8c322-e593-4750-b10d-557fb1c3088e)
+
+**Экрана Каталога:**
+
+![Simulator Screen Recording - iPhone 15 - 2024-05-01 at 13 32 14](https://github.com/4Leonid/iOS-FakeNFT-StarterProject-Public/assets/134210806/46d5401e-b44b-4232-981c-63ef11bce23a)
+
+**Экрана Корзины:**
+
+![Simulator Screen Recording - iPhone 15 Pro]([[[https://github.com/4Leonid/%80%D0%B0%D0%BD%D0%B0%202024-05-08%20%D0%B2%2015.08.16.dataset/%D0%97%D0%B0%D0%BF%D0%B8%D1%81%D1%8C%20%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202024-05-08%20%D0%B2%2015.08.16.mov](https://github.com/4Leonid/iOS-FakeNFT-StarterProject-Public/blob/develop/FakeNFT/Resources/Assets.xcassets/screen_cart_iphone_14_pro.dataset/screen_cart_iphone_14_pro.mp4](https://disk.yandex.ru/i/-LhiLa0uQSO_YQ))))
+
+
+
